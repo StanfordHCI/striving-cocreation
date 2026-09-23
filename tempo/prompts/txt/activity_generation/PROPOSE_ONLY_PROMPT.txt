@@ -1,0 +1,224 @@
+You are clustering ACTIONS into long-lived ACTIVITIES for {user_name}.
+
+You are working at the **Activity Theory** level:
+- **Operations** = low-level HOW (clicks, keystrokes) — already abstracted away.
+- **Actions** = goal-directed WHAT at the task level — these are the inputs you see.
+- **Activities** = motive-driven pursuits that ORGANIZE multiple actions — the ongoing project, role, or endeavor that gives actions their meaning. An activity answers "what working sphere does this action serve?" not "what specific task is being done?"
+
+Your job is to turn **recent ACTIONS** into **persistent ACTIVITIES** that represent {user_name}'s recurring projects, pursuits, and behavioral patterns.
+
+An **ACTIVITY** in this system is a **working sphere** — a motive-driven pursuit that organizes multiple actions:
+- A **stable cluster** that persists across many runs and encompasses many different actions/tasks.
+- Something {user_name} would recognize as "a thing I'm working on / engaged with" — a project, role, or ongoing endeavor.
+- **Broader than any single task** but **narrower than a life domain** — it names the concrete endeavor, not the individual to-do item and not an abstract aspiration.
+- Preserves **named entities** (projects, people, organizations, tools) — these are critical for retrieval and disambiguation.
+- The **motive** behind the activity is what unifies its actions: many different tasks (writing, reading, emailing, debugging) can all serve the same activity if they share the same overarching purpose.
+
+########################################
+# Examples of GOOD activity descriptions (for this stage)
+########################################
+These name an ongoing endeavor that organizes the observed actions.
+They are broader than a single task but grounded in what you can see.
+Note: screen behavior often serves pursuits beyond the computer — health,
+social, financial, creative, etc. Infer the real-world endeavor, not just
+the app being used.
+
+- "{user_name} is writing the UIST 2025 paper on Tempo — drafting sections in Overleaf and reviewing related work"
+- "{user_name} is apartment hunting in the Bay Area — browsing Zillow and Craigslist listings, comparing commute times on Google Maps, messaging landlords"
+- "{user_name} is training for a half marathon — logging runs on Strava, researching training plans, and tracking nutrition in MyFitnessPal"
+- "{user_name} is managing personal finances — reviewing transactions in Mint, researching index funds on Bogleheads, updating a budget spreadsheet"
+- "{user_name} is planning Priya's surprise birthday dinner — coordinating with friends on iMessage, browsing restaurant menus, making an OpenTable reservation"
+- "{user_name} is learning Spanish — doing Duolingo lessons, watching Spanish-language YouTube videos, and reading articles on El País"
+- "{user_name} is debugging and testing Tempo's notification service"
+- "{user_name} is browsing Reddit r/programming and watching YouTube tech talks in the evening"
+
+Note: these may be MERGED with other activities in a later reconciliation step.
+Your job is to propose the best cluster you can see from THIS batch of actions.
+
+########################################
+# Examples of BAD activity descriptions (avoid)
+########################################
+
+TOO NARROW (just restating a single action — cluster into the broader endeavor):
+- "looking at a Zillow listing for 425 Oak St" — one action; the pursuit is apartment hunting
+- "watching a YouTube video about tempo runs" — one action; the pursuit is marathon training
+- "fixing line 43 of auth.py" — one task; what project does this belong to?
+
+TOO BROAD (abstract aspiration or life domain, not a concrete pursuit):
+- "wants to be healthy" — which health pursuit? training, diet, managing a condition?
+- "managing personal life" — which aspect? housing, finances, relationships?
+- "doing research" — which research project? name it
+
+TOO APP-LEVEL (names the tool, not the pursuit):
+- "using Zillow" — for what? apartment hunting? investment research? curiosity?
+- "browsing Reddit" — which subreddits, and what is {user_name} looking for?
+- "editing Google Sheets" — what is the spreadsheet for?
+
+########################################
+# Recent actions to cluster
+########################################
+These are the **goal-level ACTIONS** derived from operations.
+
+Each line is: "- ID:<int> | <action text> | goal_hint:<hint> | ts:<timestamp> | <metadata>"
+- `action text` is a concise, goal-directed summary of what {user_name} was doing.
+- `goal_hint` is a short phrase capturing the higher-level motive.
+- `conf=N/10` is Stage 2's confidence in this action (higher = more reliable).
+- `decay=N/10` is the action's durability (high = sustained/meaningful, low = trivial/brief).
+- `dur=Xm` is how long the action lasted (e.g., 5m, 1.2h).
+- `object=<label>` is the main object/artifact this action works on (e.g., "Sequoia IRB response", "dissertation methods section").
+- `outcome=<type>` is the outcome type (produce_artifact, communicate, plan_organize, learn_explore, monitor_check, other).
+- `domain=<str>` is the life/work domain (e.g., research, teaching, admin, personal_life, health).
+- `community=<str>` is the community this action is for/with (e.g., lab, teaching_team, students).
+- `tension=<str>` is any apparent conflict between user's goals and their current action.
+- `engage=<state>` is the user's attention pattern (sustained_focus, fragmented, idle, rapid_switching).
+- `cog=<mode>` is Rasmussen cognitive mode (skill_based, rule_based, knowledge_based).
+- `init=<type>` is what triggered the action (self_initiated, externally_triggered).
+- `social=<mode>` is social context (solo, synchronous_communication, async_communication, passive_consumption).
+- Multiple actions may belong to the same long-lived ACTIVITY.
+- Use confidence and decay as quality signals: low-confidence actions may be noise, high-decay actions represent sustained effort.
+- Use object, domain, and community to group actions into coherent working spheres.
+- Use tension hints to detect actions that may hinder an activity's goal.
+
+{actions}
+
+########################################
+# Temporal context (chronological deltas)
+########################################
+Use this as a **weak prior** only. Do not merge unrelated actions just because
+they co-occur in time. If actions consistently co-occur, that may indicate
+coordinated work but not necessarily the same working sphere. You may infer temporal
+groupings from the deltas if useful.
+
+{temporal_context}
+
+########################################
+# Prior context (CLUSTERABLE — actions immediately before this batch)
+########################################
+These are actions from previous batches that directly precede current-batch
+actions (via FOLLOWS relations). They are **clusterable** — you MAY include
+their IDs in your `action_ids` output to assign them to a candidate activity.
+
+Each line shows: ID, action text, goal_hint, timestamp, object (if any),
+domain (if any), which current-batch action IDs it precedes, and its current
+activity assignment(s) (if any).
+
+- `assigned_to:[<activity_id>:<activity_label>]` = already assigned to this activity.
+  Including it in your candidate creates multi-membership (the action belongs to
+  both its existing activity and your proposed candidate). This is allowed.
+- `assigned_to:none` = not yet assigned to any activity.
+
+Use the `assigned_to` annotation to understand what working sphere this action
+currently belongs to — if your candidate matches that sphere, it's a strong
+signal they are the same activity.
+
+{prior_context}
+
+########################################
+# Concurrent context (CLUSTERABLE — co-occurring / overlapping actions from previous batches)
+########################################
+These are actions from previous batches that CO-OCCURRED with or OVERLAPPED
+actions in the current batch. They are **clusterable** — you MAY include
+their IDs in your `action_ids` output.
+
+- `co_occurs` = happened in the same session/batch (same time window, different tasks)
+- `overlaps` = time ranges actually intersect (interleaved work)
+
+Each line shows: ID, relation type, action text, goal_hint, timestamp, object (if any),
+domain (if any), current activity assignment(s), and which current-batch action IDs
+it is concurrent with.
+
+- `assigned_to:[<activity_id>:<activity_label>]` = already assigned to this activity.
+- `assigned_to:none` = not yet assigned.
+
+If current-batch actions share concurrent context with the same external action,
+they may belong to the same working sphere or represent coordinated multi-tasking.
+
+{concurrent_context}
+
+{user_stated_goals}
+
+{system_goals}
+
+{user_constraints}
+{user_context}
+
+########################################
+TASK
+
+Propose a candidate ACTIVITIES that can explain these recent actions.
+
+This is a **candidate generation** step:
+- Your primary job is to propose **candidate activities** that best describe these actions.
+- Propose NEW activities when you see **2–3+ actions** that:
+  - Share a coherent **working sphere** (same project, pursuit, or behavioral pattern),
+  - Clearly belong to the same concrete pursuit.
+- You may include **prior context** and **concurrent context** action IDs
+  in `action_ids`. These are actions from previous batches that are
+  temporally connected to the current batch. Including them produces
+  richer, more accurate clusters. Use the `assigned_to` annotations
+  to inform your clustering decisions.
+
+For each candidate:
+- Provide a concise **description** that names the concrete working sphere or personal project.
+- Provide a **purpose** — what {user_name} is trying to accomplish in this sphere right now.
+- Extract **people** involved (from action text, community metadata, or social_mode context).
+- Extract **resources** being used (apps, documents, tools, websites).
+- Summarize the **temporal_pattern** (e.g., "weekday mornings", "evening sessions", "bursty/reactive").
+- Summarize **engagement_profile** by aggregating the `engage` fields across assigned actions: "mostly_sustained", "mostly_fragmented", or "mixed".
+- Summarize **initiation_profile** by aggregating the `init` fields: "mostly_self_initiated", "mostly_externally_triggered", or "mixed".
+- Set **identity_context** to the primary life domain: "work", "personal", "creative", "social", or "health".
+- List ALL `"action_ids"` (action IDs) that belong to this activity.
+
+Make sure:
+- You cover **ALL current-batch actions** with at least one candidate:
+  - Every current-batch action must appear in the `action_ids` of at least one candidate.
+  - Context actions (prior/concurrent) may be included but are not required.
+- Keep the number of NEW activities small; think of them as new entries in {user_name}'s portfolio of ongoing working spheres.
+
+########################################
+VALENCE
+
+For each action you assign to a candidate, indicate whether it **supports** or **hinders** that candidate's goal:
+- `"supports"` = this action moves the activity FORWARD (e.g., writing a section advances dissertation progress)
+- `"hinders"` = this action works AGAINST the activity's goal (e.g., procrastination behavior grouped under a productivity activity)
+- `"neutral"` = this action is within scope but neither clearly helps nor hurts
+
+Most actions will be `"supports"` — use `"hinders"` only when there's clear evidence the action undermines the activity's goal.
+
+Provide `action_valences` as a parallel array matching `action_ids` (same length, same order).
+
+########################################
+# Confidence scoring
+########################################
+Rate your confidence in each candidate activity based on how strongly the evidence supports the clustering:
+
+- **Evidence breadth**: Do multiple actions clearly converge on the same working sphere, or is the cluster based on just one action?
+- **Named entity overlap**: Do the actions share specific projects, people, tools, or documents?
+- **Engagement quality**: Were the interactions meaningful and sustained, or brief glances that happened to co-occur?
+
+Score: **1 (weak/speculative)** to **10 (strong, multi-action convergence with shared entities and purpose)**.
+
+Be conservative. Just because actions co-occur in time does not mean they belong to the same activity.
+
+########################################
+OUTPUT STRICT JSON (no prose, no markdown):
+
+{{
+  "candidates": [
+    {{
+      "candidate_id": "C1",
+      "description": "string — concrete working sphere label with named entities",
+      "purpose": "string — what they're trying to accomplish in this sphere right now",
+      "people": ["list of people/teams involved, or empty"],
+      "resources": ["list of apps/docs/tools/websites being used"],
+      "temporal_pattern": "string — when/how often this activity occurs",
+      "engagement_profile": "mostly_sustained | mostly_fragmented | mixed",
+      "initiation_profile": "mostly_self_initiated | mostly_externally_triggered | mixed",
+      "identity_context": "work | personal | creative | social | health",
+      "reasoning": "[Explain WHY these actions belong to this activity. Reference specific actions and their goal_hints.]",
+      "action_ids": [ALL action IDs that belong to this candidate],
+      "action_valences": ["supports", "supports", "hinders"],
+      "confidence": 8
+    }}
+  ]
+}}

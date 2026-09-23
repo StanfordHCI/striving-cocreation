@@ -1,0 +1,6 @@
+[
+  {
+    "prompt_hash": "53ed634c6a7b786c6ad1e90d36f9b4b13a7c663c536e583c20caf218fcf778f8",
+    "response": "{\"candidates\":[{\"candidate_id\":\"C1\",\"description\":\"Developing and collaboratively shipping the server API\",\"action_ids\":[1,2,3,4,5],\"action_valences\":[\"supports\",\"supports\",\"supports\",\"supports\",\"supports\"],\"reasoning\":\"All five actions contribute to implementing, verifying, reviewing, and coordinating the same software change.\",\"confidence\":9,\"purpose\":\"Ship a reliable API change\",\"people\":[\"engineering team\"],\"resources\":[\"VS Code\",\"pytest\",\"GitHub\",\"Slack\"]}]}"
+  }
+]

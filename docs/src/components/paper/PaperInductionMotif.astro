@@ -1,0 +1,60 @@
+---
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+<div class:list={['paper-induction-motif', { compact }]} aria-hidden="true">
+  <svg viewBox="0 0 184 336" fill="none" focusable="false">
+    <g class="screens">
+      <g>
+        <rect x="10" y="8" width="116" height="72" rx="5" />
+        <path d="M10 23H126M22 35H84M22 43H68" />
+        <circle cx="18" cy="16" r="1" /><circle cx="24" cy="16" r="1" />
+      </g>
+      <g>
+        <rect x="28" y="28" width="116" height="72" rx="5" />
+        <path d="M28 43H144M40 55H103M40 63H87" />
+        <circle cx="36" cy="36" r="1" /><circle cx="42" cy="36" r="1" />
+      </g>
+      <g>
+        <rect x="46" y="48" width="116" height="72" rx="5" />
+        <path d="M46 63H162M98 79H148M98 88H138M98 97H144" />
+        <circle cx="54" cy="56" r="1" /><circle cx="60" cy="56" r="1" />
+        <rect class="screen-content" x="58" y="76" width="28" height="28" rx="2" />
+      </g>
+    </g>
+
+    <g class="capture-links">
+      <path d="M58 120C58 140 18 141 18 164M72 120C72 141 46 143 46 164M88 120C88 142 74 143 74 164" />
+      <path d="M106 120C106 142 102 143 102 164M128 120C128 141 130 143 130 164M150 120C150 140 158 143 158 164" />
+    </g>
+    <g class="hierarchy-links">
+      <path d="M18 164L32 210M46 164L32 210M74 164L88 210M102 164L88 210M130 164L144 210M158 164L144 210" />
+      <path d="M32 210L52 261M88 210L52 261M88 210L132 261M144 210L132 261M52 261L92 318M132 261L92 318" />
+    </g>
+    <g class="operations">
+      <circle cx="18" cy="164" r="3" /><circle cx="46" cy="164" r="3" />
+      <circle cx="74" cy="164" r="3" /><circle cx="102" cy="164" r="3" />
+      <circle cx="130" cy="164" r="3" /><circle cx="158" cy="164" r="3" />
+    </g>
+    <g class="actions"><circle cx="32" cy="210" r="5" /><circle cx="88" cy="210" r="5" /><circle cx="144" cy="210" r="5" /></g>
+    <g class="activities"><circle cx="52" cy="261" r="7" /><circle cx="132" cy="261" r="7" /></g>
+    <circle class="striving" cx="92" cy="318" r="10" />
+  </svg>
+</div>
+
+<style>
+  .paper-induction-motif { position: absolute; top: 220px; left: max(18px, calc((100vw - 1440px) / 2)); width: clamp(130px, 11vw, 160px); pointer-events: none; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  path, rect { stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+  .screens { stroke: #b7a69b; fill: #fbf9f7; }
+  .screens circle { fill: #b7a69b; stroke: none; }
+  .screen-content { fill: #eee7e1; stroke: none; }
+  .capture-links { stroke: #d1c4bb; }
+  .hierarchy-links { stroke: #c0afa2; }
+  .operations { fill: #d1c4bf; }
+  .actions { fill: #ad9283; }
+  .activities { fill: #9a7e6e; }
+  .striving { fill: #69554d; }
+  .compact { top: 122px; left: 8px; width: 52px; }
+  @media (max-width: 1199px) { .paper-induction-motif:not(.compact) { display: none; } }
+</style>

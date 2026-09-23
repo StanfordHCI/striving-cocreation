@@ -1,0 +1,30 @@
+,
+  "contrast": {
+    "supported": [
+      {
+        "user_goal_id": 1,
+        "user_goal_text": "...",
+        "evidence_strength": "strong",
+        "activity_ids": [4, 7, 12],
+        "action_count": 45,
+        "note": "..."
+      }
+    ],
+    "unsupported": [
+      {
+        "user_goal_id": 3,
+        "user_goal_text": "...",
+        "evidence_strength": "weak",
+        "action_count": 2,
+        "note": "..."
+      }
+    ],
+    "unstated": [
+      {
+        "inferred_goal": "...",
+        "evidence_strength": "strong",
+        "action_count": 30,
+        "note": "..."
+      }
+    ]
+  }

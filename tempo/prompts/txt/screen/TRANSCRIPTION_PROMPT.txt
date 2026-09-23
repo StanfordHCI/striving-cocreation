@@ -1,0 +1,7 @@
+Transcribe in markdown ALL the content from the screenshots of the user's screen.
+
+NEVER SUMMARIZE ANYTHING. You must transcribe everything EXACTLY, word for word, but don't repeat yourself.
+
+ALWAYS include all the application names, file paths, and website URLs in your transcript.
+{user_context}
+Create a FINAL structured markdown transcription.

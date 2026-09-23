@@ -1,0 +1,139 @@
+/* Keep annotations and labels clear of the graph and laptop. */
+.paper-explore-heading {
+  width: min(var(--paper-media-width), calc(100% - 48px));
+  margin: 0 auto 28px;
+  font: 500 clamp(22px, 2.2vw, 28px)/1.4 var(--paper-font);
+  letter-spacing: -.02em;
+  color: var(--paper-ink);
+  text-align: center;
+  text-wrap: balance;
+}
+.paper-explore .v5-embedded .v5-header { top: 24px; padding: 0; }
+.paper-explore .v5-embedded .v5-graph-note { top: 24px; }
+.paper-explore .v5-embedded .v5-graph-hint { margin-top: 12px; }
+.paper-explore .v5-embedded .v5-laptop-wrap {
+  box-sizing: border-box;
+  padding-top: calc(var(--scene-top-reserve) * var(--laptop-reveal));
+  padding-bottom: calc(80px * var(--laptop-reveal));
+}
+.paper-explore .v5-embedded.v5-immersive {
+  --laptop-width: calc((100vw + 24px) * (1 - var(--laptop-reveal)) + var(--laptop-final-width) * var(--laptop-reveal));
+  --laptop-height: calc((100vh + 64px) * (1 - var(--laptop-reveal)) + var(--laptop-final-height) * var(--laptop-reveal));
+}
+.paper-explore .v5-embedded .v5-graph-wrap {
+  inset: auto;
+  left: var(--graph-left, 50%);
+  top: var(--graph-top, 60%);
+  width: var(--graph-size, 50vmin);
+  height: var(--graph-size, 50vmin);
+  padding: 0;
+  transform: translate(-50%, -50%);
+}
+.paper-explore .v5-embedded .v5-svg { inset: 0; width: 100%; height: 100%; overflow: visible; }
+.paper-explore .v5-embedded .v5-st-label-text { font-size: var(--graph-label-size, 12px); line-height: 1.55; }
+.paper-explore .v5-embedded .v5-st-label { width: var(--graph-label-width, 80%); }
+.paper-explore .v5-embedded .v5-legend {
+  top: var(--legend-top, 20%);
+  left: var(--legend-left, 50%);
+  right: auto;
+  width: var(--legend-width, 80%);
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  justify-content: center;
+  column-gap: var(--legend-gap, 12px);
+  row-gap: 12px;
+  font-size: var(--legend-font-size, 12px);
+  line-height: 1.4;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.paper-explore .v5-embedded .v5-legend-row {
+  gap: 8px;
+  padding: var(--legend-padding, 8px) calc(var(--legend-padding, 8px) * 1.5);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.paper-explore .v5-legend-row[data-state="current"] {
+  background: #fff;
+  border-color: var(--paper-accent);
+  box-shadow: 0 2px 8px rgb(70 50 40 / .06);
+  font-weight: 600;
+}
+.paper-explore .v5-legend-row[data-state="upcoming"] { color: #746d69; }
+.paper-explore .v5-legend-row[data-state="upcoming"] .v5-dot { background: transparent; border-color: #a89b94; }
+.paper-explore .v5-embedded .v5-legend .v5-dot { width: var(--legend-dot-size, 7px); height: var(--legend-dot-size, 7px); }
+.paper-explore .v5-hover-label { width: var(--graph-tooltip-width, 260px); font-family: var(--paper-font); font-size: 14px; line-height: 1.55; padding: 12px 16px; }
+.paper-explore .v5-hover-label[data-pinned="true"] { pointer-events: auto; }
+.v5-node-target { r: max(2px, var(--graph-hit-radius, 2px)); }
+.v5-node-hint {
+  position: absolute;
+  z-index: 5;
+  transform: translateX(-50%);
+  width: var(--graph-tooltip-width, 260px);
+  padding: 12px 16px;
+  border: 1px solid var(--paper-rule);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(60 42 33 / .07);
+  color: var(--paper-ink);
+  font: 400 14px/1.5 var(--paper-font);
+  text-align: center;
+  pointer-events: none;
+}
+.v5-node-hint::before {
+  content: '';
+  position: absolute;
+  left: calc(50% + var(--hint-arrow-offset, 0px));
+  top: -5px;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-left: 1px solid var(--paper-rule);
+  border-top: 1px solid var(--paper-rule);
+  transform: rotate(45deg);
+}
+.v5-node-pulse { transform-box: fill-box; transform-origin: center; animation: v5-invite-pulse 1.8s ease-out 3; opacity: .65; }
+.v5-node-inviting { animation: v5-invite-nudge 1.8s ease-in-out 3; }
+@keyframes v5-invite-pulse {
+  0% { transform: scale(.7); opacity: .8; }
+  75%, 100% { transform: scale(1.5); opacity: .15; }
+}
+@keyframes v5-invite-nudge {
+  0%, 20%, 100% { transform: translateX(0); }
+  5%, 15% { transform: translateX(.3px); }
+  10% { transform: translateX(-.3px); }
+}
+@media (max-width: 600px) {
+  .paper-explore .v5-embedded .v5-legend { grid-template-columns: repeat(2, max-content); }
+  .paper-explore .v5-embedded .v5-legend-row { gap: 8px; }
+  .paper-explore .v5-embedded[data-laptop-compact="true"] .v5-legend { grid-template-columns: repeat(4, max-content); }
+  .paper-explore .v5-embedded[data-laptop-compact="true"] .v5-legend-row { gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v5-node-pulse, .v5-node-inviting { animation: none; }
+}
+
+/* Anchor the opening laptop to the abstract, then center the screen as
+   scrolling moves into it. Only the closing frame reserves title space. */
+.paper-explore .v5-laptop-first .v5-laptop-wrap {
+  padding-top: calc(var(--scene-top-reserve) * var(--laptop-exit));
+  padding-bottom: calc(80px * var(--laptop-exit));
+  translate: 0 calc((var(--laptop-final-height) + 20px - 100vh) * .5 * var(--laptop-entry));
+}
+/* The lid and base already cast a shadow that follows the device. */
+.paper-explore .v5-laptop-first .v5-laptop-shadow { display: none; }
+.paper-explore .v5-laptop-first .v5-scrollcue {
+  top: calc(var(--laptop-final-height) + 40px);
+  bottom: auto;
+}
+.paper-explore .v5-static .v5-section { height: 100vh; }
+.paper-explore .v5-static .v5-sticky { position: relative; }
+.paper-explore .v5-static .v5-scrollbar { display: none; }
+.v5-static-definitions { width: min(800px, calc(100% - 48px)); margin: 0 auto; padding: 32px 0 48px; }
+.v5-static-definitions > div + div { margin-top: 24px; }
+.v5-static-definitions dt { font-weight: 500; margin-bottom: 8px; }
+.v5-static-definitions dd { margin: 0; color: var(--paper-muted); line-height: 1.6; }

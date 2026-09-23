@@ -1,0 +1,908 @@
+/* =========================================================
+   V5 — immersive, click-driven graph explorer
+   ========================================================= */
+.v5-root {
+  position: relative;
+  background: #0f0d0a;
+  color: #f5f2e8;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Tall section gives the scroll room; sticky inside pins the
+   viewport so the experience stays in place while you scroll
+   the day forward. */
+.v5-section {
+  position: relative;
+  height: 720vh;
+}
+.v5-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #0f0d0a;
+  perspective: 2400px;
+  perspective-origin: center 60%;
+}
+
+/* The laptop wraps the graph and scales as one composition.  Centered
+   in the viewport; the bezel begins so large its edges are off-screen
+   (graph reads as full-bleed), then settles to a normal-sized MacBook
+   with the graph inside its screen. */
+.v5-laptop-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transform-origin: center 45%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.v5-laptop-shadow {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  width: min(960px, 80vw);
+  height: 60px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%);
+  filter: blur(6px);
+  pointer-events: none;
+  transform-origin: center top;
+}
+
+/* Background timelapse: drives off scroll progress.  Blurred and
+   tinted so the graph stays the foreground star. */
+.v5-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.v5-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.65) brightness(0.55);
+  /* The files are already blurred. These filters only adjust the theme. */
+}
+.v5-bg-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(15, 13, 10, 0.0) 0%, rgba(15, 13, 10, 0.30) 75%),
+    linear-gradient(to bottom, rgba(15, 13, 10, 0.20) 0%, rgba(15, 13, 10, 0.50) 100%);
+}
+
+/* ---------- Header ---------- */
+.v5-graph-note {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: min(680px, calc(100% - 40px));
+  text-align: center;
+  color: #f5f2e8;
+  font-size: 17px;
+  line-height: 1.45;
+  text-shadow: 0 1px 6px #0f0d0a;
+  pointer-events: none;
+}
+.v5-graph-note p { margin: 0; }
+.v5-level-note, .v5-level-sizing { display: grid; }
+.v5-level-sizing, .v5-level-current, .v5-level-sizing > div { grid-area: 1 / 1; }
+.v5-level-sizing { visibility: hidden; }
+.v5-graph-note .v5-level-title { display: flex; justify-content: center; align-items: center; gap: 9px; margin-bottom: 8px; font-size: 21px; font-weight: 500; line-height: 1.3; }
+.v5-graph-note .v5-level-definition { font-size: 17px; }
+.v5-level-copy { animation: v5-level-appear .18s ease-out; }
+@keyframes v5-level-appear { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .v5-level-copy { animation: none; } }
+.v5-graph-note .v5-graph-hint { margin-top: 6px; font-size: 14px; color: #d4c8a8; }
+.v5-graph-hint-touch { display: none; }
+@media (hover: none) {
+  .v5-graph-hint-pointer { display: none; }
+  .v5-graph-hint-touch { display: inline; }
+}
+@media (max-width: 600px) {
+  .v5-graph-note { top: 20px; font-size: 15px; }
+  .v5-graph-note .v5-level-title { font-size: 19px; margin-bottom: 6px; }
+  .v5-graph-note .v5-level-definition { font-size: 15px; }
+  .v5-graph-note .v5-graph-hint { font-size: 13px; }
+}
+
+/* The title is the closing frame, not the opening one: centred above
+   the settled laptop, hidden for the whole build (opacity is driven
+   from scroll progress in V5Page). */
+.v5-header {
+  position: absolute;
+  top: 3.5rem;
+  left: 50%;
+  z-index: 2;
+  width: min(90vw, 900px);
+  text-align: center;
+  pointer-events: none;
+}
+.v5-eyebrow {
+  display: block;
+  font-family: 'Castoro', Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(245, 242, 232, 0.6);
+  margin-bottom: 0.4rem;
+}
+.v5-title {
+  font-family: 'Castoro', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.4vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0;
+  color: #f5f2e8;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.65);
+}
+.v5-title em {
+  font-style: italic;
+  color: #d4c8a8;
+}
+
+/* ---------- Footer ---------- */
+.v5-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 3rem;
+  pointer-events: none;
+  font-size: 0.78rem;
+  color: rgba(245, 242, 232, 0.55);
+}
+
+/* Footer-left node counter — tiny live indicator that doesn't crowd
+   the bottom strivings. */
+.v5-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.paper-explore .v5-footer-left { position: absolute; left: 50%; transform: translateX(-50%); }
+@media (max-width: 600px) { .paper-explore .v5-footer-left { display: none; } }
+.v5-footer-count {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.74rem;
+  color: rgba(212, 200, 168, 0.75);
+  letter-spacing: 0.02em;
+}
+
+/* Scroll-progress bar pinned to the very bottom edge of the viewport.
+   Always visible, never blocks any text. */
+.v5-scrollbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(245, 242, 232, 0.08);
+  z-index: 4;
+  pointer-events: none;
+}
+.v5-scrollbar-fill {
+  height: 100%;
+  background: #d4c8a8;
+  transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(212, 200, 168, 0.55);
+}
+/* Scroll cue — sits centred just above the footer while the graph is
+   still empty, then fades out as soon as the day starts advancing.
+   The dot repeats a slow fall down the track so the affordance reads
+   as "keep going down" without shouting. */
+.v5-scrollcue {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.v5-scrollcue-label {
+  font-family: 'Castoro', Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  color: rgba(245, 242, 232, 0.62);
+  animation: v5-cue-breathe 2.8s ease-in-out infinite;
+}
+.v5-scrollcue-track {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 242, 232, 0.28) 0%,
+    rgba(245, 242, 232, 0) 100%
+  );
+}
+.v5-scrollcue-dot {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: #d4c8a8;
+  box-shadow: 0 0 10px rgba(212, 200, 168, 0.6);
+  animation: v5-cue-fall 2.2s cubic-bezier(0.4, 0, 0.5, 1) infinite;
+}
+@keyframes v5-cue-fall {
+  0%   { transform: translateY(0);    opacity: 0; }
+  18%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateY(38px); opacity: 0; }
+}
+@keyframes v5-cue-breathe {
+  0%, 100% { opacity: 0.62; }
+  50%      { opacity: 0.95; }
+}
+/* Respect reduced-motion — keep the cue, drop the looping animation. */
+@media (prefers-reduced-motion: reduce) {
+  .v5-scrollcue-dot { animation: none; opacity: 1; }
+  .v5-scrollcue-label { animation: none; }
+}
+
+.v5-footer-links {
+  display: flex;
+  margin-left: auto;
+  gap: 1.5rem;
+  pointer-events: auto;
+}
+.v5-footer-links a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, color 0.15s, background 0.2s ease,
+              box-shadow 0.2s ease, padding 0.25s ease;
+}
+.v5-footer-links a:hover {
+  color: #f5f2e8;
+  border-bottom-color: rgba(245, 242, 232, 0.5);
+}
+
+/* End state — once the laptop has zoomed out and the graph is done
+   building, PDF / arXiv / Code stop being footer chrome and become
+   the page's call to action: pill buttons, gold, larger, lifted. */
+.v5-footer-links.prominent {
+  gap: 0.75rem;
+  transform: translateY(-0.35rem);
+}
+.v5-footer-links.prominent a {
+  padding: 0.5rem 1.15rem;
+  border: 1px solid rgba(212, 200, 168, 0.45);
+  border-radius: 999px;
+  background: rgba(212, 200, 168, 0.07);
+  color: #f0e9d6;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  animation: v5-links-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.v5-footer-links.prominent a:nth-child(2) { animation-delay: 0.07s; }
+.v5-footer-links.prominent a:nth-child(3) { animation-delay: 0.14s; }
+.v5-footer-links.prominent a:hover {
+  background: #d4c8a8;
+  border-color: #d4c8a8;
+  color: #0f0d0a;
+  box-shadow: 0 8px 26px rgba(212, 200, 168, 0.28);
+}
+@keyframes v5-links-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v5-footer-links.prominent a { animation: none; }
+}
+
+/* ---------- Graph ---------- */
+.v5-graph-wrap {
+  position: absolute;
+  inset: 0;
+  padding: 13rem 3rem 8rem;
+  z-index: 1;
+}
+.v5-svg {
+  position: absolute;
+  inset: 13rem 3rem 8rem;
+  width: calc(100% - 6rem);
+  height: calc(100% - 21rem);
+}
+
+.v5-legend {
+  position: absolute;
+  top: 2.5rem;
+  right: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: rgba(245, 242, 232, 0.85);
+  z-index: 3;
+}
+.v5-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.v5-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.v5-dot.op { background: #5ad687; }
+.v5-dot.ac { background: #e08fd6; }
+.v5-dot.av { background: #5a9fd4; }
+.v5-dot.st { background: #3a9b8a; }
+
+/* Hover label — appears below the currently-hovered op / action /
+   activity dot. Shows the example text + a small coloured tag for the
+   entity type.  Pure overlay above the SVG, no scroll-driven timing. */
+.v5-hover-label {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  max-width: 280px;
+  background: rgba(20, 18, 14, 0.96);
+  border: 1px solid rgba(245, 242, 232, 0.12);
+  border-radius: 4px;
+  padding: 0.55rem 0.75rem 0.6rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #f5f2e8;
+}
+.v5-hover-tag {
+  font-family: 'SF Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.v5-hover-label-op  .v5-hover-tag { color: #5ad687; }
+.v5-hover-label-ac  .v5-hover-tag { color: #e08fd6; }
+.v5-hover-label-av  .v5-hover-tag { color: #5a9fd4; }
+.v5-hover-label-op  { border-color: rgba(90, 214, 135, 0.35); }
+.v5-hover-label-ac  { border-color: rgba(224, 143, 214, 0.35); }
+.v5-hover-label-av  { border-color: rgba(90, 159, 212, 0.35); }
+.v5-hover-text {
+  color: rgba(245, 242, 232, 0.95);
+}
+
+/* Striving labels — clickable.  "Draft" state (early revisions) shows
+   in italic + lighter color, signalling the system is still working out
+   what's going on.  "Final" state (last revision) is upright and bright,
+   signalling Tempo has settled on the phrasing. */
+.v5-st-label {
+  position: absolute;
+  width: 24%;
+  max-width: 320px;
+  z-index: 3;
+  cursor: pointer;
+  transition: opacity 0.25s ease, color 0.18s ease;
+  padding: 0.3rem 0;
+  color: rgba(245, 242, 232, 0.88);
+}
+.v5-st-label[data-side="l"] .v5-st-label-text {
+  text-align: right;
+}
+.v5-st-label[data-side="r"] .v5-st-label-text {
+  text-align: left;
+}
+.v5-st-label:hover {
+  color: #d4c8a8;
+}
+.v5-st-label-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: inherit;
+  display: block;
+}
+.v5-st-label.draft .v5-st-label-text {
+  font-style: italic;
+  color: rgba(245, 242, 232, 0.6);
+}
+.v5-st-label.final .v5-st-label-text {
+  color: #f5f2e8;
+}
+
+
+/* ---------- Detail panel ---------- */
+.v5-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(440px, 92vw);
+  background: #161310;
+  border-left: 1px solid rgba(245, 242, 232, 0.08);
+  box-shadow: -30px 0 60px -20px rgba(0,0,0,0.6);
+  z-index: 50;
+  padding: 1.75rem 1.75rem 2.5rem;
+  overflow-y: auto;
+  color: #f5f2e8;
+}
+.v5-panel-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(245, 242, 232, 0.08);
+  border: 1px solid rgba(245, 242, 232, 0.12);
+  color: #f5f2e8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.v5-panel-close:hover {
+  background: rgba(245, 242, 232, 0.16);
+}
+
+.v5-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  margin: 0.25rem 0 1.5rem;
+  padding-right: 2.5rem;
+}
+.v5-crumb-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.v5-crumb {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+.v5-crumb:hover { opacity: 1; }
+.v5-crumb.current { opacity: 1; }
+.v5-crumb-sep {
+  color: rgba(245, 242, 232, 0.35);
+  font-size: 0.85rem;
+}
+
+.v5-tag {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  padding: 0.18rem 0.5rem;
+  border-radius: 3px;
+}
+.v5-tag.op { color: #5ad687; background: rgba(90, 214, 135, 0.12); }
+.v5-tag.ac { color: #e08fd6; background: rgba(224, 143, 214, 0.12); }
+.v5-tag.av { color: #5a9fd4; background: rgba(90, 159, 212, 0.12); }
+.v5-tag.st { color: #3a9b8a; background: rgba(58, 155, 138, 0.18); }
+
+.v5-panel-head {
+  margin-bottom: 1.75rem;
+}
+.v5-panel-head .v5-tag {
+  margin-bottom: 0.7rem;
+}
+.v5-panel-rev {
+  display: block;
+  font-family: 'SF Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 184, 128, 0.78);
+  margin-bottom: 0.5rem;
+}
+.v5-panel-text {
+  font-family: 'Castoro', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0;
+  color: #f5f2e8;
+}
+
+.v5-panel-section {
+  margin-bottom: 1.75rem;
+  border-top: 1px solid rgba(245, 242, 232, 0.08);
+  padding-top: 1.25rem;
+}
+.v5-panel-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 232, 0.5);
+  margin-bottom: 0.85rem;
+}
+
+/* Source screenshot grid */
+.v5-frames {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.v5-frame {
+  aspect-ratio: 16 / 10;
+  background: #0a0908;
+  border: 1px solid rgba(245, 242, 232, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.v5-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: blur(6px) brightness(0.85);
+}
+
+/* Children list */
+.v5-children {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.v5-child {
+  width: 100%;
+  text-align: left;
+  background: rgba(245, 242, 232, 0.04);
+  border: 1px solid rgba(245, 242, 232, 0.08);
+  border-radius: 6px;
+  padding: 0.7rem 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: inherit;
+  font: inherit;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.v5-child:hover {
+  background: rgba(245, 242, 232, 0.08);
+  border-color: rgba(245, 242, 232, 0.2);
+  transform: translateY(-1px);
+}
+.v5-child-text {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #e8e3d3;
+}
+.v5-child-more {
+  font-size: 0.78rem;
+  color: rgba(245, 242, 232, 0.4);
+  margin-top: 0.35rem;
+  padding-left: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .v5-header { padding: 1.5rem 1.25rem 0; }
+  .v5-graph-wrap { padding: 7rem 1rem 4rem; }
+  .v5-svg { inset: 7rem 1rem 4rem; width: calc(100% - 2rem); height: calc(100% - 11rem); }
+  .v5-legend { top: 7rem; right: 1.25rem; font-size: 0.7rem; }
+  .v5-footer { padding: 1rem 1.25rem; }
+  .v5-st-label { width: 30%; }
+  .v5-st-label-text { font-size: 0.65rem; }
+  .v5-scrollcue { bottom: 4.25rem; }
+  .v5-scrollcue-label { font-size: 0.82rem; }
+}
+
+/* (Laptop visuals live inside .v5-laptop-wrap above — these classes
+   style the lid / screen / base parts of that wrap.) */
+
+/* Shadow under the laptop, intensifies as the lid opens */
+.v5-laptop-shadow {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 100%;
+  margin-top: 12px;
+  height: 60px;
+  background: radial-gradient(ellipse at center top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%);
+  filter: blur(6px);
+  pointer-events: none;
+  transform-origin: center top;
+}
+
+/* The lid */
+.v5-laptop-lid {
+  width: min(960px, 80vw);
+  transform-style: preserve-3d;
+  position: relative;
+  z-index: 2;
+}
+.v5-laptop-lid-face {
+  width: 100%;
+  aspect-ratio: 16 / 10.4;
+  background: linear-gradient(135deg, #303335, #101213 24%, #090a0b 76%, #242728);
+  border: 1px solid #85898c;
+  border-radius: 18px 18px 6px 6px;
+  padding: 15px 10px 13px;
+  box-shadow:
+    inset 0 0 0 2px #393c3e,
+    inset 0 3px 2px rgb(255 255 255 / .2),
+    0 20px 40px -22px rgb(24 28 30 / .35),
+    0 3px 7px rgb(24 28 30 / .2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.v5-laptop-camera {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle at 38% 35%, #436072, #172634 32%, #05080b 65%);
+  border-radius: 50%;
+  border: 1px solid #44484a;
+  box-shadow: 0 0 0 1px #080a0b;
+}
+.v5-laptop-screen {
+  flex: 1;
+  width: 100%;
+  /* Keep the fictional screen sequence visible inside the laptop. */
+  background: transparent;
+  border-radius: 5px 5px 2px 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* The paper's immersive scene begins with the screen itself filling the
+   viewport. Its dimensions settle into the laptop as the graph completes,
+   including on portrait displays where scaling a landscape laptop crops it. */
+.v5-immersive {
+  --laptop-width: calc((100vw + 24px) * (1 - var(--laptop-reveal)) + min(960px, 80vw) * var(--laptop-reveal));
+  --laptop-height: calc((100vh + 64px) * (1 - var(--laptop-reveal)) + min(624px, 52vw) * var(--laptop-reveal));
+  background: #fff;
+  color: var(--paper-ink);
+  --brown-op-dark: #746957;
+  --brown-ac-dark: #98876b;
+  --brown-av-dark: #b7a07a;
+  --brown-st-dark: #d4c8a8;
+  --screen-op: color-mix(in srgb, var(--brown-op-dark), var(--graph-op-fill, #d1c4bf) var(--screen-palette));
+  --screen-ac: color-mix(in srgb, var(--brown-ac-dark), var(--graph-ac-fill, #a88779) var(--screen-palette));
+  --screen-av: color-mix(in srgb, var(--brown-av-dark), var(--graph-av-fill, #6e5045) var(--screen-palette));
+  --screen-st: color-mix(in srgb, var(--brown-st-dark), var(--graph-st-fill, #342824) var(--screen-palette));
+}
+.v5-immersive .v5-laptop-screen { background: color-mix(in srgb, #0a0a0a, #fff var(--screen-white)); }
+.v5-immersive .v5-bg { filter: opacity(var(--screen-background-opacity)); }
+.v5-immersive .v5-legend,
+.v5-immersive .v5-st-label.final .v5-st-label-text,
+.v5-immersive .v5-st-label.draft .v5-st-label-text { color: var(--screen-ink); }
+.v5-immersive .v5-dot.op { background: var(--screen-op); }
+.v5-immersive .v5-dot.ac { background: var(--screen-ac); }
+.v5-immersive .v5-dot.av { background: var(--screen-av); }
+.v5-immersive .v5-dot.st { background: var(--screen-st); }
+.v5-immersive .v5-dot { border: 1px solid var(--screen-ink); }
+.v5-immersive .v5-tag.op, .v5-immersive .v5-hover-label-op { --detail-tone: var(--brown-op-dark); }
+.v5-immersive .v5-tag.ac, .v5-immersive .v5-hover-label-ac { --detail-tone: var(--brown-ac-dark); }
+.v5-immersive .v5-tag.av, .v5-immersive .v5-hover-label-av { --detail-tone: var(--brown-av-dark); }
+.v5-immersive .v5-tag.st { --detail-tone: var(--brown-st-dark); }
+.v5-immersive .v5-tag { color: color-mix(in srgb, var(--detail-tone), #fff 30%); background: color-mix(in srgb, var(--detail-tone) 18%, transparent); }
+.v5-immersive .v5-hover-tag { color: color-mix(in srgb, var(--detail-tone), #fff 30%); }
+.v5-immersive .v5-hover-label { border-color: color-mix(in srgb, var(--detail-tone) 55%, transparent); }
+.v5-immersive .v5-sticky { background: #fff; }
+.v5-immersive .v5-graph-note { color: var(--scene-note-ink); text-shadow: none; }
+.v5-immersive .v5-graph-note .v5-graph-hint { color: var(--scene-note-muted); }
+.v5-immersive .v5-title { color: var(--paper-ink); text-shadow: none; }
+.v5-immersive .v5-footer, .v5-immersive .v5-footer-count { color: var(--scene-footer-ink); }
+.v5-immersive .v5-footer-links.prominent a { color: var(--paper-ink); background: #fff; border-color: var(--paper-rule); box-shadow: none; }
+.v5-immersive .v5-footer-links.prominent a:hover { background: var(--paper-hover); }
+.v5-immersive .v5-scrollcue-label { color: var(--paper-muted); font-family: var(--paper-font); font-style: normal; }
+.v5-immersive .v5-scrollcue-track { background: linear-gradient(#c7b9a7, transparent); }
+.v5-immersive .v5-scrollcue-dot { background: #997957; box-shadow: none; }
+.v5-immersive .v5-scrollbar { background: transparent; }
+.v5-immersive .v5-scrollbar-fill { background: #a98a63; box-shadow: none; }
+.v5-immersive .v5-laptop-lid { width: var(--laptop-width); }
+.v5-immersive .v5-laptop-lid-face { height: var(--laptop-height); aspect-ratio: auto; }
+.v5-immersive .v5-laptop-base { width: calc(var(--laptop-width) * 1.08); }
+.v5-immersive .v5-laptop-screen { container-type: size; }
+.v5-immersive .v5-graph-wrap {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: min(72cqh, 65cqw);
+  height: min(72cqh, 65cqw);
+  padding: 0;
+  transform: translate(-50%, -50%);
+}
+.paper-explore .v5-immersive .v5-svg { inset: 0; width: 100%; height: 100%; overflow: visible; }
+.paper-explore .v5-immersive .v5-legend { top: 8cqh; right: 6cqw; font-size: clamp(6px, 1.05cqw, 15px); gap: 6px; }
+.paper-explore .v5-immersive .v5-dot { width: clamp(4px, .7cqw, 9px); height: clamp(4px, .7cqw, 9px); }
+.v5-immersive .v5-st-label { width: 36%; }
+.paper-explore .v5-immersive .v5-st-label-text { font-family: 'Tempo Paper Sans', system-ui, sans-serif; font-size: clamp(calc(11px - 6px * var(--laptop-reveal)), 1.25cqw, 19px); line-height: 1.35; }
+.paper-explore .v5-immersive .v5-title { font-family: 'Tempo Paper Serif', Georgia, serif; }
+@media (max-width: 600px) {
+  .paper-explore .v5-immersive .v5-legend {
+    top: calc(250px * (1 - var(--laptop-reveal)) + 12px * var(--laptop-reveal));
+    left: 5%;
+    right: 5%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 12px;
+    font-size: calc(11px - 5px * var(--laptop-reveal));
+  }
+  .v5-immersive .v5-header { top: 4rem; padding: 0; }
+  .v5-immersive .v5-st-label { width: 40%; }
+}
+
+/* Two published branches leave room for the complete, unshortened strivings. */
+.paper-explore .v5-paper-example .v5-st-label,
+.v5-paper-example .v5-st-label { width: 80%; max-width: none; }
+.v5-immersive .v5-panel-text { font-family: var(--paper-font); }
+
+/* A pale, full-screen alternative: the background arrives with operations
+   and clears during the same laptop pullback. */
+.v5-immersive.v5-soft .v5-laptop-screen {
+  background: color-mix(in srgb, #fff, #ded9d4 var(--screen-arrival));
+}
+.v5-soft .v5-bg-img { filter: saturate(.35) contrast(.72); }
+.v5-soft .v5-bg-tint {
+  background:
+    radial-gradient(ellipse at center, rgb(255 255 255 / .65), rgb(255 255 255 / .35)),
+    linear-gradient(to bottom, rgb(255 255 255 / .58), rgb(255 255 255 / .30));
+}
+.v5-immersive.v5-soft .v5-hover-tag { color: var(--paper-muted); }
+.v5-immersive.v5-soft .v5-tag { color: var(--paper-ink); }
+
+/* Base */
+.v5-laptop-base {
+  position: relative;
+  width: calc(min(960px, 80vw) * 1.06);
+  margin-top: -1px;
+  z-index: 1;
+}
+.v5-laptop-hinge {
+  width: 88%;
+  height: 5px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #777a7c, #171a1c 8%, #333739 50%, #171a1c 92%, #777a7c);
+  border-radius: 2px 2px 0 0;
+}
+.v5-laptop-deck {
+  width: 100%;
+  height: 18px;
+  background:
+    linear-gradient(90deg, #8a8e91, transparent 5%, transparent 95%, #8a8e91),
+    linear-gradient(to bottom, #eef0f1 0%, #c8ccce 14%, #adb2b5 38%, #858b8f 72%, #555c60 92%, #3d4448);
+  border-radius: 2px 2px 48% 48% / 2px 2px 90% 90%;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 2px 1px rgb(20 25 29 / .2),
+    0 14px 18px -10px rgb(20 25 29 / .35);
+  position: relative;
+}
+.v5-laptop-notch {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15%;
+  height: 5px;
+  background: linear-gradient(90deg, #92999d, #bac0c3 15%, #d7dbdd 50%, #bac0c3 85%, #92999d);
+  border-radius: 0 0 10px 10px;
+  box-shadow: inset 0 1px 2px rgb(31 39 44 / .3), 0 1px 0 rgb(255 255 255 / .5);
+}
+
+/* Caption underneath — positioned to viewport, not the laptop, so it
+   stays at its natural size and isn't dragged around by the laptop
+   scale animation. */
+.v5-laptop-caption {
+  position: absolute;
+  bottom: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  text-align: center;
+  max-width: 760px;
+  width: 80%;
+  pointer-events: none;
+}
+.v5-laptop-eyebrow {
+  display: block;
+  font-family: 'Castoro', Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #d4c8a8;
+  margin-bottom: 0.7rem;
+}
+.v5-laptop-line {
+  font-family: 'Castoro', Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  line-height: 1.3;
+  color: #f5f2e8;
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+/* The snapshot graph rendered inside the laptop screen */
+.v5-snap-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #110f0c;
+}
+.v5-snap-svg {
+  position: absolute;
+  inset: 1.5rem 12% 1.5rem 12%;
+  width: 76%;
+  height: calc(100% - 3rem);
+}
+.v5-snap-legend {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: ui-sans-serif, 'Inter', sans-serif;
+  font-size: 0.5rem;
+  color: rgba(245, 242, 232, 0.7);
+}
+.v5-snap-legend div {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.v5-snap-legend .v5-dot {
+  width: 6px;
+  height: 6px;
+}
+.v5-snap-label {
+  position: absolute;
+  width: 22%;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.5rem;
+  line-height: 1.3;
+  color: #f5f2e8;
+  pointer-events: none;
+}
+.v5-snap-label[data-side="l"] { text-align: right; }
+.v5-snap-label[data-side="r"] { text-align: left; }

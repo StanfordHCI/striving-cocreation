@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GraphStory from '../graph/GraphStory';
+import PaperDetails from './PaperDetails.astro';
+import PaperVideo from './PaperVideo.astro';
+import PaperEditingMotif from './PaperEditingMotif.astro';
+import PaperInductionMotif from './PaperInductionMotif.astro';
+import PaperAbstract from './PaperAbstract.astro';
+import bibtex from '../../data/paper.bib?raw';
+import '../../styles/paper.css';
+import '../../styles/paper-light.css';
+import '../../styles/paper-no-header.css';
+import '../../styles/paper-graph-layout.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const doi = 'https://doi.org/10.1145/3830398.3830630';
+const authors = [
+  { name: 'Shardul Sapkota', email: 'sapkota@stanford.edu' },
+  { name: 'Matthew Jörke', email: 'joerke@stanford.edu', equal: true },
+  { name: 'Zane Sabbagh', email: 'zanesabbagh@stanford.edu', equal: true },
+  { name: 'Omar Shaikh', email: 'oshaikh@stanford.edu' },
+  { name: 'Grace Wang', email: 'gracewng@stanford.edu' },
+  { name: 'James A. Landay', email: 'landay@stanford.edu' },
+];
+
+---
+<Layout
+  title="What Are You Really Trying to Do? — Tempo · UIST 2026"
+  description="Co-Creating Life Goals from Everyday Computer Use. Tempo, a Stanford HCI research project at UIST 2026."
+  bodyClass="paper-site paper-no-header paper-co-creation paper-light"
+>
+  <a class="paper-skip" href="#results">Skip animation and read the results</a>
+  <main id="top">
+    <section class="paper-intro" aria-labelledby="paper-title">
+      <PaperEditingMotif />
+      <PaperInductionMotif />
+      <div class="paper-width paper-intro-content">
+        <div class="paper-intro-copy">
+          <h1 id="paper-title">“What Are You Really Trying to Do?”</h1>
+          <p class="paper-subtitle">Co-Creating Life Goals from Everyday Computer Use</p>
+          <p class="paper-publication">UIST 2026</p>
+          <div class="paper-byline">
+            <ul class="paper-authors" aria-label="Authors">
+              {authors.map(author => <li>
+                <a href={`mailto:${author.email}`}>{author.name}{author.equal && <sup>*</sup>}</a>
+              </li>)}
+            </ul>
+            <p class="paper-author-affiliation">Stanford University</p>
+            <p class="paper-affiliation">* Equal contribution</p>
+          </div>
+          <nav class="paper-resources" aria-label="Paper resources">
+            <a href="https://arxiv.org/abs/2605.00497v2" target="_blank" rel="noreferrer">arXiv <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/StanfordHCI/striving-cocreation" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+          </nav>
+        </div>
+        <PaperVideo {base} />
+      </div>
+    </section>
+
+    <PaperAbstract />
+
+    <div id="explore" class="paper-explore">
+      <h2 class="paper-explore-heading">Observations are stored as a hierarchy in an annotated graph.</h2>
+      <GraphStory client:load />
+      <noscript><p class="paper-width">The interactive example needs JavaScript. Tempo groups computer observations into operations, actions, activities, and long-term strivings. <a href="#results">Continue to the results.</a></p></noscript>
+    </div>
+
+    <PaperDetails {base} {doi} {bibtex} />
+  </main>
+
+</Layout>

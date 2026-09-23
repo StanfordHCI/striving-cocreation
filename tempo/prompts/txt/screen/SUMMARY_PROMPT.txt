@@ -1,0 +1,7 @@
+Provide a detailed description of the actions occuring across the provided images. The images are in the order they were taken.
+
+Include as much relevant detail as possible, but remain concise.
+
+Generate a handful of bullet points and reference *specific* actions the user is taking.
+
+Keep in mind that that the content on the screen is what the user is viewing. It may not be what the user is actively doing or what they believe, so practice caution when making assumptions.

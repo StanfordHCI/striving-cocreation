@@ -1,0 +1,62 @@
+.hierarchy-table-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--panel);
+}
+.hierarchy-table-panel { display: flex; flex: 1; flex-direction: column; min-width: 0; min-height: 0; }
+.hierarchy-level-tabs { display: flex; flex-shrink: 0; gap: 20px; padding: 0 24px; overflow-x: auto; border-top: 1px solid var(--line); }
+.hierarchy-level-tabs button { display: flex; align-items: center; gap: 7px; flex-shrink: 0; min-height: 48px; padding: 0 2px; border: 0; border-bottom: 2px solid transparent; color: var(--muted); background: transparent; font: inherit; font-size: 14px; cursor: pointer; }
+.hierarchy-level-tabs button[aria-selected="true"] { border-bottom-color: var(--accent); color: var(--accent-deep); font-weight: 600; }
+.hierarchy-level-tabs button span { min-width: 22px; padding: 1px 5px; border-radius: 4px; background: var(--paper); font-size: 12px; font-variant-numeric: tabular-nums; text-align: center; }
+.hierarchy-level-tabs button[aria-selected="true"] span { background: var(--accent-soft); }
+
+.hierarchy-table-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 24px;
+  border-block: 1px solid var(--line);
+}
+.hierarchy-table-search { display: flex; align-items: center; gap: 8px; flex: 1 1 240px; min-width: 0; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); background: var(--paper); }
+.hierarchy-table-search input { width: 100%; min-width: 0; height: 38px; padding: 0; border: 0; outline: 0; color: var(--ink); background: transparent; font: inherit; font-size: 14px; }
+.hierarchy-table-count { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.hierarchy-table-scroll { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+.hierarchy-data-table { width: 100%; border-collapse: separate; border-spacing: 0; color: var(--ink); font-size: 14px; }
+.hierarchy-data-table caption { padding: 12px 24px; text-align: left; color: var(--muted); font-size: 13px; }
+.hierarchy-data-table th { position: sticky; top: 0; z-index: 1; padding: 12px 16px; border-block: 1px solid var(--line); background: var(--paper); text-align: left; white-space: nowrap; font-size: 12px; font-weight: 600; }
+.hierarchy-data-table th button { display: flex; align-items: center; gap: 6px; padding: 0; border: 0; color: inherit; background: transparent; font: inherit; cursor: pointer; }
+.hierarchy-data-table th button svg { color: var(--muted); }
+.hierarchy-data-table td { padding: 14px 16px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.hierarchy-data-table th:first-child, .hierarchy-data-table td:first-child { padding-left: 24px; }
+.hierarchy-data-table tbody tr { cursor: pointer; }
+.hierarchy-data-table tbody tr:hover { background: var(--paper); }
+.hierarchy-data-table tbody tr.is-selected { background: var(--accent-soft); }
+.hierarchy-data-table tbody tr.is-selected td:first-child { box-shadow: inset 3px 0 var(--accent); }
+.hierarchy-table-id, .hierarchy-table-number { font-variant-numeric: tabular-nums; }
+.hierarchy-table-id { white-space: nowrap; color: var(--muted); font-size: 13px; }
+.hierarchy-table-description { width: 45%; min-width: 280px; }
+.hierarchy-table-description > button { display: inline; padding: 0; border: 0; color: inherit; background: transparent; text-align: left; font: inherit; line-height: 1.5; overflow-wrap: anywhere; cursor: pointer; }
+.hierarchy-table-description > svg { display: inline; margin-left: 7px; color: var(--muted); vertical-align: middle; }
+.hierarchy-table-parents { display: flex; flex-wrap: wrap; gap: 4px 8px; min-width: 70px; max-width: 160px; }
+.hierarchy-table-parents button { padding: 0; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.hierarchy-table-date { min-width: 155px; font-size: 13px; line-height: 1.5; }
+.hierarchy-table-missing { color: var(--muted); }
+.hierarchy-data-table td.hierarchy-table-empty { height: 220px; padding: 40px 24px; text-align: center; vertical-align: middle; color: var(--muted); cursor: default; }
+.hierarchy-table-empty button { display: block; margin: 14px auto 0; }
+.hierarchy-table-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; min-height: 56px; padding: 12px 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+.hierarchy-table-pagination { display: flex; align-items: center; gap: 12px; }
+.hierarchy-table-pagination button, .hierarchy-table-empty button { padding: 5px 10px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--panel); font: inherit; cursor: pointer; }
+.hierarchy-table-pagination button:disabled { opacity: 0.45; cursor: default; }
+.hierarchy-table-search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hierarchy-table-view button:focus-visible, .hierarchy-table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+@container hierarchy-pane (max-width: 780px) {
+  .hierarchy-table-toolbar, .hierarchy-table-footer { padding: 12px 14px; }
+  .hierarchy-level-tabs { padding: 0 14px; gap: 16px; }
+  .hierarchy-data-table caption { padding: 12px 14px; }
+  .hierarchy-data-table th:first-child, .hierarchy-data-table td:first-child { padding-left: 14px; }
+}

@@ -1,0 +1,180 @@
+You are reconciling new activity candidates against an existing activity repository for {user_name}.
+
+############################
+# What is an ACTIVITY?
+############################
+You are working at the **Activity Theory** level:
+- **Operations** = low-level HOW (clicks, keystrokes) — already abstracted away.
+- **Actions** = goal-directed WHAT at the task level — these are the evidence you see.
+- **Activities** = motive-driven pursuits that ORGANIZE multiple actions — the ongoing project, role, or endeavor that gives actions their meaning. An activity answers "what working sphere does this action serve?" not "what specific task is being done?"
+
+An **ACTIVITY** is a **working sphere** — a motive-driven pursuit that organizes multiple actions:
+- A **stable cluster** that persists across many runs and encompasses many different actions/tasks.
+- Something {user_name} would recognize as "a thing I'm working on / engaged with" — a project, role, or ongoing endeavor.
+- **Broader than any single task** but **narrower than a life domain** — it names the concrete endeavor, not the individual to-do item and not an abstract aspiration.
+- Preserves **named entities** (projects, people, organizations, tools) — these are critical for retrieval and disambiguation.
+- The **motive** behind the activity is what unifies its actions: many different tasks (writing, reading, emailing, debugging) can all serve the same activity if they share the same overarching purpose.
+
+############################
+# Good activity labels
+############################
+These name an ongoing endeavor that organizes the observed actions.
+They are broader than a single task but grounded in what you can see.
+Note: screen behavior often serves pursuits beyond the computer — health,
+social, financial, creative, etc. Infer the real-world endeavor, not just
+the app being used.
+
+- "{user_name} is writing the UIST 2025 paper on Tempo — drafting sections in Overleaf and reviewing related work"
+- "{user_name} is apartment hunting in the Bay Area — browsing Zillow and Craigslist listings, comparing commute times on Google Maps, messaging landlords"
+- "{user_name} is training for a half marathon — logging runs on Strava, researching training plans, and tracking nutrition in MyFitnessPal"
+- "{user_name} is managing personal finances — reviewing transactions in Mint, researching index funds on Bogleheads, updating a budget spreadsheet"
+- "{user_name} is planning Priya's surprise birthday dinner — coordinating with friends on iMessage, browsing restaurant menus, making an OpenTable reservation"
+- "{user_name} is learning Spanish — doing Duolingo lessons, watching Spanish-language YouTube videos, and reading articles on El País"
+- "{user_name} is debugging and testing Tempo's notification service"
+- "{user_name} is browsing Reddit r/programming and watching YouTube tech talks in the evening"
+
+############################
+# Bad activity labels (avoid)
+############################
+
+TOO NARROW (just restating a single action — cluster into the broader endeavor):
+- "looking at a Zillow listing for 425 Oak St" — one action; the pursuit is apartment hunting
+- "watching a YouTube video about tempo runs" — one action; the pursuit is marathon training
+- "fixing line 43 of auth.py" — one task; what project does this belong to?
+
+TOO BROAD (abstract aspiration or life domain, not a concrete pursuit):
+- "wants to be healthy" — which health pursuit? training, diet, managing a condition?
+- "managing personal life" — which aspect? housing, finances, relationships?
+- "doing research" — which research project? name it
+
+TOO APP-LEVEL (names the tool, not the pursuit):
+- "using Zillow" — for what? apartment hunting? investment research? curiosity?
+- "browsing Reddit" — which subreddits, and what is {user_name} looking for?
+- "editing Google Sheets" — what is the spreadsheet for?
+
+############################
+# Decision criteria
+############################
+For EACH candidate, choose ONE. The key question: does this candidate describe the SAME ongoing pursuit as something already in the repository?
+
+**match** — Candidate IS an existing activity. Same project, same people, same purpose.
+- Signals: shared named entities (project, people, tools), same domain, same proximate purpose.
+- Action: attach actions to existing activity. Keep label.
+
+**revise** — Same activity, but existing label is stale or missing context.
+- Signals: same pursuit, but candidate reveals new people, resources, or scope.
+- Action: attach actions AND update label/summary. UNION people/resources — don't abstract away specifics.
+- Use sparingly — only when the label would be misleading without the update.
+
+**new** — Genuinely different pursuit from everything in the repository.
+- Signals: different project, purpose, domain.
+- Action: create new activity with specific, entity-rich label.
+
+**merge** — Candidate reveals that 2+ EXISTING activities were actually one working sphere.
+- Signals: candidate bridges activities tracked separately but sharing the same project/purpose/people.
+- Action: merge existing activities into one, attach candidate's actions, unified label.
+- Threshold: must genuinely be the same pursuit accidentally split. If they're distinct pursuits that co-occur, use relations instead. NEVER merge aggressively — false merges lose information.
+
+############################
+# Constraint rules
+############################
+- [locked]: MUST NOT be merged, deleted, or relabeled. If candidate overlaps, prefer match.
+- [user-edited]: MUST keep exact label. You may reassign actions to/from them.
+- [user-reassigned]: respect current assignment.
+- User annotations outweigh behavioral inference.
+- NEVER merge two activities if either is [locked].
+
+############################
+# Confidence scoring
+############################
+Rate your confidence in each reconciliation decision:
+
+- **Evidence quality**: Is the decision supported by shared named entities (projects, people, tools)?
+- **Distinctness**: For "new" decisions — is the candidate clearly different from everything in the repository?
+- **Merge threshold**: For merges — is there strong evidence these are genuinely the same pursuit, not just co-occurring?
+
+Score: **1 (weak/uncertain)** to **10 (strong evidence for this decision)**.
+
+Be conservative. Assign high confidence (8-10) only when the evidence clearly and directly supports the decision.
+
+############################
+# Edge cases
+############################
+- **Contradictions**: If a candidate conflicts with an existing activity's purpose, keep them separate and add a "conflicts" relation.
+- **Granularity mismatch**: If one activity subsumes another, prefer the version that preserves distinct ideas without redundancy.
+- **Confidence recalibration**: After deciding match/revise/merge, recalibrate confidence based on the combined evidence — the merged result may be stronger or weaker than either original.
+
+############################
+# Candidates
+############################
+Each candidate:
+ID: <int>
+Label: <string>
+Working sphere: purpose=<str> | people=<list> | resources=<list> | temporal=<str> | engage=<str> | init=<str> | domain=<str>
+Evidence actions (ID | action | goal_hint | ts | conf | decay | dur | engage | cog | init | social):
+<list>
+
+{candidate_goals}
+
+############################
+# Existing activities (repository)
+############################
+Each line: "ID:<int> | <label> | status:<active/dormant> | used:<count>x | last:<when> | conf=N/10 | stability=N/10 | purpose:<str> | people:<list> | resources:<list> | domain:<str>"
+Prefer matching to high-confidence, high-stability activities when ambiguous.
+
+{existing_goals}
+
+{goal_conflicts}
+
+{user_constraints}
+{user_context}
+############################
+# Relations
+############################
+Also identify relations between each candidate (or resulting activity) and other activities:
+- `supports` — one enables or feeds into the other
+- `conflicts` — contradictory purposes or competing priorities
+- `overlaps` — often active in the same time windows
+- `co_occurs` — recurs in parallel across days but not within a session
+- `competes` — time/attention trade-off
+
+############################
+# Output strict JSON only
+{{
+  "decisions": [
+    {{
+      "candidate_id": 123,
+      "decision": "match|revise|new|merge",
+      "target_goal_id": 456,
+      "new_goal_label": "string",
+      "revised_label": "string",
+      "goal_summary": "string",
+      "purpose": "string",
+      "people": ["list"],
+      "resources": ["list"],
+      "temporal_pattern": "string",
+      "engagement_profile": "mostly_sustained | mostly_fragmented | mixed",
+      "initiation_profile": "mostly_self_initiated | mostly_externally_triggered | mixed",
+      "identity_context": "work | personal | creative | social | health",
+      "scope_tags": ["tag1", "tag2"],
+      "merge_goal_ids": [2, 3],
+      "relations": [
+        {{
+          "other_goal_id": 456,
+          "relation": "supports|conflicts|overlaps|co_occurs|competes",
+          "confidence": 0.0,
+          "rationale": "short reason"
+        }}
+      ],
+      "confidence": 1,
+      "decision_reasoning": "short explanation grounded in evidence"
+    }}
+  ]
+}}
+
+Field notes:
+- target_goal_id: required for match/revise/merge, null for new.
+- new_goal_label: required for new, optional for merge.
+- revised_label: required for revise.
+- For match/revise/merge: provide UPDATED fields that union candidate context into target.
+- For new: provide fields as they are from the candidate.

@@ -1,0 +1,40 @@
+=== PARTICIPANT CONTEXT (from onboarding interview) ===
+The following is situational context about {user_name}, gathered before observation
+began. Not all observed behavior requires contextual interpretation. Use this context when it resolves ambiguity about why someone is doing something — not to narrate what they're already visibly doing.
+
+Q: What are the main roles you play in your life right now?
+A: {roles}
+
+Q: Walk me through what a typical weekday looks like for you.
+A: {typical_day}
+
+Q: What takes up most of your time and energy right now — whether by choice or obligation?
+A: {main_concerns}
+
+Q: What are the main sources of stress or pressure in your life right now?
+A: {stressors}
+
+Q: Has anything significant changed in your life recently, or is anything about to change?
+A: {recent_changes}
+
+Q: In terms of your work or career, what matters most to you or concerns you most?
+A: {work}
+
+Q: In terms of your relationships, what matters most to you or concerns you most?
+A: {relationships}
+
+Q: In terms of your personal growth, what matters most to you or concerns you most?
+A: {personal_growth}
+
+Q: In terms of your health, what matters most to you or concerns you most?
+A: {health}
+
+Q: In terms of your finances, what matters most to you or concerns you most?
+A: {finances}
+
+Q: In terms of your education, what matters most to you or concerns you most?
+A: {education}
+
+Q: Is there anything else about your life or situation that would help us understand your computer use?
+A: {additional_context}
+===

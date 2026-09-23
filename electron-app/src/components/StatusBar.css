@@ -1,0 +1,222 @@
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 28px;
+  padding: 0 12px;
+  background: var(--panel);
+  border-top: 1px solid var(--line-soft);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.status-bar-left,
+.status-bar-center,
+.status-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-bar-left {
+  flex: 1;
+}
+
+.status-bar-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #aeaeb2;
+}
+
+.status-indicator.recording .status-dot {
+  background: #ef4444;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-indicator.idle .status-dot {
+  background: #aeaeb2;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.status-text {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.status-indicator.recording .status-text {
+  color: #ef4444;
+}
+
+.elapsed-time {
+  color: var(--muted);
+  padding-left: 6px;
+  border-left: 1px solid var(--line);
+  margin-left: 6px;
+}
+
+.stats-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.stat-count {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.stat-label {
+  color: var(--muted);
+}
+
+.stat-separator {
+  color: var(--line);
+}
+
+.backend-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.backend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.backend-status.connected .backend-dot {
+  background: #22c55e;
+}
+
+.backend-status.disconnected .backend-dot {
+  background: #ef4444;
+}
+
+.backend-text {
+  color: var(--muted);
+}
+
+/* Database indicator */
+.database-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  color: var(--muted);
+}
+
+.database-indicator svg {
+  opacity: 0.7;
+}
+
+.database-indicator.production {
+  border-color: rgba(var(--accent-rgb), 0.3);
+}
+
+.database-indicator.production svg {
+  color: var(--accent);
+}
+
+.database-indicator.experiment {
+  border-color: rgba(var(--accent-rgb), 0.3);
+}
+
+.database-indicator.experiment svg {
+  color: var(--accent);
+}
+
+.database-name {
+  font-size: 10px;
+  font-weight: 500;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Running experiments indicator */
+.running-experiments-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: rgba(var(--accent-rgb), 0.08);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 12px;
+}
+
+.running-experiments-indicator:hover {
+  background: rgba(var(--accent-rgb), 0.15);
+  border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.experiment-spinner {
+  width: 8px;
+  height: 8px;
+  border: 2px solid rgba(var(--accent-rgb), 0.3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* @keyframes spin lives in src/styles/main.css */
+
+.experiment-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.experiment-progress-mini {
+  width: 40px;
+  height: 3px;
+  background: rgba(var(--accent-rgb), 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.experiment-progress-fill-mini {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.experiment-percent {
+  font-size: 10px;
+  color: var(--accent);
+  font-family: monospace;
+}

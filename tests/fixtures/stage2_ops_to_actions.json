@@ -1,0 +1,6 @@
+[
+  {
+    "prompt_hash": "41cb2e49d16341e8987f4add2263bd6134bfa4ec4ae696eaf6a61eccfe728c0a",
+    "response": "{\"segments\":[{\"label\":\"S1\",\"start_index\":1,\"end_index\":7,\"action\":{\"text\":\"Implemented and tested the server API change\",\"timestamp_start\":\"2026-01-15T14:30:00\",\"timestamp_end\":\"2026-01-15T14:33:00\",\"confidence\":9,\"decay\":2}},{\"label\":\"S2\",\"start_index\":8,\"end_index\":10,\"action\":{\"text\":\"Reviewed pull request 42 on GitHub\",\"timestamp_start\":\"2026-01-15T14:33:30\",\"timestamp_end\":\"2026-01-15T14:34:30\",\"confidence\":8,\"decay\":3}}]}"
+  }
+]

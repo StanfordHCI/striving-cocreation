@@ -1,0 +1,53 @@
+---
+interface Props { base: string; }
+const { base } = Astro.props;
+---
+<section class="paper-video-intro" id="video" aria-label="Video preview">
+  <div class="paper-video-container">
+    <div class="paper-video-player">
+      <video id="paper-preview" controls playsinline preload="none" poster={`${base}/media/tempo-preview-poster.jpg`} aria-label="30-second Tempo research preview" tabindex="0">
+        <source src={`${base}/media/tempo-preview.mp4`} type="video/mp4" />
+        <a href={`${base}/media/tempo-preview.mp4`}>Download the video</a>.
+      </video>
+      <button class="paper-video-play" type="button" aria-label="Play the 30-second video preview" aria-controls="paper-preview" hidden>
+        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M7 4v16l13-8z" /></svg>
+      </button>
+    </div>
+    <p class="paper-video-status" role="status"></p>
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('#paper-preview');
+  const play = document.querySelector<HTMLButtonElement>('.paper-video-play');
+  const status = document.querySelector<HTMLElement>('.paper-video-status');
+  if (video && play) {
+    video.controls = false;
+    video.tabIndex = -1;
+    play.hidden = false;
+    play.addEventListener('click', async () => {
+      try {
+        await video.play();
+        video.focus({ preventScroll: true });
+        if (status) status.textContent = '';
+      } catch {
+        video.controls = true;
+        video.tabIndex = 0;
+        play.hidden = true;
+        video.focus({ preventScroll: true });
+        if (status) status.textContent = 'Use the video controls to start playback.';
+      }
+    });
+    video.addEventListener('play', () => {
+      video.controls = true;
+      video.tabIndex = 0;
+      play.hidden = true;
+    });
+    video.addEventListener('ended', () => {
+      video.controls = false;
+      video.tabIndex = -1;
+      play.hidden = false;
+      if (document.activeElement === video) play.focus({ preventScroll: true });
+    });
+  }
+</script>

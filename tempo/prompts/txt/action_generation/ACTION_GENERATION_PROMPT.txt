@@ -1,0 +1,118 @@
+ You are a helpful assistant tasked with analyzing user behavior based on transcribed activity.
+Your goal is to cluster the sequence of user operations into actions, which should be goal-directed steps that represent the user's intent.
+
+## Operations (numbered)
+{operations_list}
+
+Each operation is an atomic, low-level step. Your job is to group these into a small number of higher-level ACTIONS.
+{user_context}
+## {user_name}'s current life goals (for goal_hint alignment)
+When writing the goal_hint, check if the action naturally serves one of these known goals. If so, use wording consistent with the goal.
+
+{current_goals}
+
+## What is an ACTION?
+
+An ACTION is a goal-directed step (the "why" at the task level). Given these user operations, what is {user_name} **currently in the process of doing**?
+
+- Think of an ACTION as a coherent task the user would describe in one sentence (e.g., "{user_name} is drafting an email to the IRB", "{user_name} is editing Overleaf paper for Sequoia study").
+- Boundaries between two actions should mark a shift in {user_name}'s **intent or task**, not just a small change in app, window, or tab.
+- Avoid over-segmentation for minor tweaks in the same task (e.g., switching between Overleaf and PDF viewer for the same writing task is usually ONE action).
+
+These actions will later be clustered into long-lived ACTIVITIES (ongoing
+projects and pursuits). Your goal_hint and object_label are key signals
+for that clustering — make them specific and consistent across related actions.
+
+Always reference specific applications, documents, projects, or names when they are clearly indicated in the operations (e.g., "{user_name} is editing Overleaf document for Sequoia IRB", "{user_name} is checking Slack messages from James").
+
+Take into account things {user_name} chooses NOT to do (e.g., ignoring some notifications or tabs), as this can help you infer what they are prioritizing in the current action.
+
+Segments must be:
+- Contiguous
+- Non-overlapping
+- Together cover all operations 1..N
+
+## Scoring (1–10 for each)
+
+- **boundary_confidence**: Is there a real shift in intent at this boundary?
+  High (8-10) = clear task switch. Low (1-3) = arbitrary split within same task.
+
+- **confidence**: Does the evidence support your action description?
+  High (8-10) = explicit app/document/task references, sustained interaction.
+  Low (1-3) = ambiguous, brief glance, weak support.
+  Be conservative. Just because an application appears on {user_name}'s screen does not mean they
+  have deeply engaged with it — they may have only glanced at it. Assign high confidence (8-10)
+  only when the operations show explicit, sustained engagement with specific named content.
+
+- **decay**: How long will this action remain a meaningful description?
+  High (8-10) = sustained multi-step task (writing a paper, drafting a long email).
+  Low (1-3) = brief check or glance (dismissing a notification).
+  Be conservative — don't inflate unless operations show sustained engagement.
+
+## Task
+
+Segment the operations into contiguous ACTION units and provide ONE action per segment.
+
+For each segment:
+- Explain why those operations belong together as one action.
+- Explain why boundaries (start/end) are placed where they are.
+- Describe the action in a way that a human would recognize as "what they were trying to do" during that span.
+- Include a brief `goal_hint` that captures the higher-level motive/intent that points to their life goal  (e.g., "wants to make progress on dissertation", "wants to prioritze synchronous communication").
+- Infer a lightweight metadata profile for the action (object, domain, community, rules, COM-B, habit/cue) when clearly supported by the operations; otherwise leave fields null/empty.
+
+### Action-level metadata fields
+
+For each ACTION, infer:
+- object_label: main object/problem this action is working on (e.g., "Sequoia IRB response", "dissertation methods section"), or null.
+- outcome_type: type of outcome (one of: "produce_artifact", "communicate", "plan_organize", "learn_explore", "monitor_check", "other", or null).
+- domain: life/work domain (e.g., "research", "teaching", "admin", "personal_life", "health", "travel", "other", or null).
+- community: main community this action is for/with (e.g., "lab", "sequoia_partners", "teaching_team", "students", "family_friends", "university_admin", or null).
+- tension_hint: brief description of any apparent conflict/tension between user's goals and their tools, tasks, or actions, or null.
+- engagement_state: characterizes the user's attention pattern during this action.
+  One of: "sustained_focus" (deep, uninterrupted work on a single task), "fragmented" (frequent app/tab switches, multitasking), "idle" (minimal interaction, away or passive), "rapid_switching" (fast toggling between 2-3 things), or null.
+- cognitive_mode: Rasmussen's skill-rule-knowledge framework — what level of cognitive effort does this action require?
+  One of: "skill_based" (routine/automatic, e.g. habitual email checking), "rule_based" (following known procedures, e.g. filling forms), "knowledge_based" (novel problem-solving, e.g. debugging unfamiliar code), or null.
+- initiation: what triggered this action?
+  One of: "self_initiated" (user proactively started this), "externally_triggered" (notification, message, calendar event prompted it), or null.
+- social_mode: is the user working alone or with others?
+  One of: "solo" (individual work), "synchronous_communication" (real-time interaction — call, chat, meeting), "async_communication" (email, PR review, forum post), "passive_consumption" (reading, watching, browsing), or null.
+
+Be conservative: only fill these fields when the evidence from operations clearly supports them; otherwise leave them null or empty.
+
+## Output JSON only (no prose):
+{{
+  "segments": [
+    {{
+      "label": "[Unique Segment Label; e.g., S1, S2, etc.]",
+      "start_index": [Start Index],
+      "end_index": [End Index],
+      "reasoning": "[Provide detailed evidence from specific operations that clearly justify this action segmentation. Reference operation indices and key app/content changes.]",
+      "boundary_confidence": [Boundary Confidence Score (1–10)],
+      "action": {{
+        "text": "[Action Text: MUST start with '{user_name} ...'. Concise, goal-directed description using specific app/doc names when available.]",
+        "reasoning": "[Provide detailed evidence from specific operations that clearly justify this action description. Reference operation indices and what the user is doing in each app.]",
+        "confidence": "[Confidence Score (1–10)]",
+        "decay": "[Decay Score (1–10)]",
+        "goal_hint": "[Brief hint about the user's higher level goal/motivation for this action]",
+        "metadata": {{
+          "object_label": "[string or null]",
+          "outcome_type": "[string or null]",
+          "domain": "[string or null]",
+          "community": "[string or null]",
+          "tension_hint": "[string or null]",
+          "engagement_state": "[sustained_focus | fragmented | idle | rapid_switching | null]",
+          "cognitive_mode": "[skill_based | rule_based | knowledge_based | null]",
+          "initiation": "[self_initiated | externally_triggered | null]",
+          "social_mode": "[solo | synchronous_communication | async_communication | passive_consumption | null]"
+        }}
+      }}
+    }}
+  ]
+}}
+
+Constraints:
+- 1 ≤ start_index ≤ end_index ≤ N; segments contiguous, no gaps or overlaps; segments together must cover all operations 1..N.
+- Keep the number of segments small unless there is strong evidence of multiple distinct actions.
+- boundary_confidence, confidence, decay: integers 1–10.
+- All metadata fields may be null/empty when not clearly supported by evidence.
+- Exactly one action per segment; segment labels must be unique and appear in order.

@@ -1,0 +1,102 @@
+ You are a helpful assistant tasked with analyzing user behavior based on transcribed activity.
+Your goal is to extract atomic behavioral operations from these observation transcriptions, and attach lightweight metadata about tools, social context, rules, automaticity, and affect.
+
+## Observation
+{observation_text}
+{user_context}
+## Task
+What is {user_name} **currently in the process of doing** across the transcriptions?
+
+Take into account things {user_name} chooses NOT to do or ignores. This will give you insight into what the user prioritizes.
+
+Always reference specific applications, names, or sources in the user operation. Use the transcripts as evidence.
+
+Analyze how much support each user operation has. Consider factors such as:
+- Whether the transcriptions provide direct and explicit support for the user operation.
+- The clarity and relevance of the evidence within the transcriptions.
+- If any key details are missing that would weaken the support.
+- How confidently the transcriptions alone justify the user operation without external context.
+- The degree to which interpretation is required to establish support.
+
+Use a 1–10 scale, where
+1 = the user operation is weakly supported by the transcript
+10 = {user_name} explicitly states that the user operation is true; it is directly supported by the transcript.
+
+Ignore irrelevant information when generating the user operation or evaluating support.
+
+Be conservative in your support estimates. Just because an application appears on {user_name}'s screen does not mean they have deeply engaged with it. They may have only glanced at it for a second, making it difficult to draw strong conclusions.
+
+Assign high support scores (e.g., 8-10) only when the transcriptions provide explicit, direct evidence that {user_name} is actively engaging with the content in a meaningful way.
+
+# Evaluation Criteria
+
+For the user operation you generate, evaluate its strength using two scales:
+
+### 1. Confidence Scale
+
+Rate your confidence based on how clearly the evidence supports your claim. Consider:
+
+- **Direct Evidence**: Is there direct interaction with a specific, named entity (e.g., opened "Notion," responded to "Slack" from "Alex")?
+- **Relevance**: Is the evidence clearly tied to the user operation?
+- **Engagement Level**: Was the interaction meaningful or sustained?
+
+Score: **1 (weak support)** to **10 (explicit, strong support)**. High scores require specific named references.
+
+### 2. Decay Scale
+
+Rate how long the user operation is likely to stay relevant. Consider:
+
+- **Urgency**: Does the behavior pattern have clear time pressure?
+- **Durability**: Will this pattern remain important 24 hours later or more?
+
+Score: **1 (short-lived)** to **10 (long-lasting insight or pattern)**.
+
+## Metadata fields for each OPERATION
+
+For each extracted operation, infer the following metadata fields **only when clearly supported by the transcript**. It is always acceptable to leave fields null/empty if uncertain.
+
+- tool_kind: string
+  High-level category of the application/tool used.
+  Examples: "editor", "messaging", "browser", "docs", "calendar", "data_analysis", "other".
+
+- social_target: string or null
+  Who this operation is primarily toward if it involves communication or social context.
+  Examples: "advisor", "lab", "students", "sequoia_staff", "collaborators", "friends", "family", "support_agent", or null.
+
+- rule_tags: list of strings
+  Tags for explicit rules/norms/constraints that are clearly relevant.
+  Examples: "deadline related", "compliance", "teaching obligation", "admin requirement". Use [] if nothing obvious.
+
+- automaticity_hint: string
+  Quick guess about habitual vs deliberate.
+  One of: "likely habitual", "likely deliberate", "unclear".
+
+- affect_hint: string or null
+  Very coarse emotional tone, only when explicitly signaled.
+  Examples: "stressed", "rushed", "relaxed", "neutral", or null when not clear.
+
+You may also include basic app/url context when available.
+
+## Output Format
+Return valid JSON only:
+{{
+  "operations": [
+    {{
+      "text": "[user operation Text]",
+      "reasoning": "[Provide detailed evidence from specific parts of the transcriptions to clearly justify this user operation. Refer explicitly to named entities where applicable.]",
+      "confidence": "[Confidence score (1–10)]",
+      "decay": "[Decay score (1–10)]",
+      "context": {{
+        "app": "[Application Name or null]",
+        "url": "[URL if applicable or null]",
+        "tool_kind": "[tool_kind value]",
+        "social_target": "[social_target or null]",
+        "rule_tags": ["list", "of", "rule_strings"],
+        "automaticity_hint": "[likely_habitual|likely_deliberate|unclear]",
+        "affect_hint": "[affect string or null]"
+      }}
+    }}
+  ]
+}}
+
+Generate one key operation from the observation transcriptions. This operation should be a single, atomic action that is clearly visible in the transcriptions. Use confidence scores to reflect the strength of engagement evidence. Do not extract operations for applications that are merely visible in the background with no sign of interaction.

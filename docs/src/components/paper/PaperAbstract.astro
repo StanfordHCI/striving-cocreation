@@ -1,0 +1,20 @@
+---
+import { paperAbstract } from '../../data/paperAbstract';
+---
+<section class="paper-width paper-abstract paper-abstract-laptop" id="abstract" aria-labelledby="abstract-title">
+  <h2 id="abstract-title">Abstract</h2>
+  <p>{paperAbstract}</p>
+</section>
+
+<style>
+  .paper-abstract { max-width: var(--paper-media-width); margin-inline: auto; padding: 12px 0 64px; border-bottom: 1px solid var(--paper-rule); scroll-margin-top: 32px; }
+  .paper-abstract-laptop { padding-bottom: 56px; border-bottom: 0; }
+  h2 { font-size: 23px; font-weight: 500; line-height: 1.3; letter-spacing: -.02em; color: var(--paper-ink); margin: 0 0 22px; }
+  p { font-size: 18px; line-height: 1.8; color: #4a423d; margin: 0; }
+  @media (max-width: 600px) {
+    .paper-abstract { padding: 4px 0 40px; }
+    .paper-abstract-laptop { padding-bottom: 48px; }
+    h2 { font-size: 22px; margin-bottom: 18px; }
+    p { font-size: 16px; line-height: 1.75; }
+  }
+</style>

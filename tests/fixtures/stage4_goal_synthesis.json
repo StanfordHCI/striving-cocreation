@@ -1,0 +1,10 @@
+[
+  {
+    "prompt_hash": "80ff00232bbde833ae18b0d2c3a128d6b4e9fbd6facc62db6bf0fa54cad6ba9e",
+    "response": "{\"goals\":[{\"text\":\"the user is building reliable software while collaborating effectively\",\"activity_ids\":[1,2,3,4],\"reasoning\":\"Development, review, communication, and research form one sustained objective.\",\"confidence\":9,\"needs\":[\"competence\",\"relatedness\"],\"orientation\":\"approach\",\"autonomy\":\"autonomous\"}],\"goal_relations\":[],\"dropped_goals\":[]}"
+  },
+  {
+    "prompt_hash": "1c8810de95c3d6b777be07224794aba59b6cf30eb4bbae24d5a2e5f2fc5a3f52",
+    "response": "{\"goals\":[{\"text\":\"the user is building reliable software while collaborating effectively\",\"activity_ids\":[1,2,3,4],\"reasoning\":\"Development, review, communication, and research form one sustained objective.\",\"confidence\":9,\"needs\":[\"competence\",\"relatedness\"],\"orientation\":\"approach\",\"autonomy\":\"autonomous\"}],\"goal_relations\":[],\"dropped_goals\":[]}"
+  }
+]

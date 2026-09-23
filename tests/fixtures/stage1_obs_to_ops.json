@@ -1,0 +1,6 @@
+[
+  {
+    "prompt_hash": "aaf16ca261bb113e0007384a299746a5565961069aaaae75b2d23222b68966d7",
+    "response": "{\"operations\":[{\"text\":\"Edited FastAPI routes in server.py\",\"confidence\":9,\"decay\":2,\"context\":{\"app\":\"VS Code\",\"tool_kind\":\"editor\"}},{\"text\":\"Ran pytest and reviewed passing output\",\"confidence\":9,\"decay\":2,\"context\":{\"app\":\"Terminal\",\"tool_kind\":\"terminal\"}},{\"text\":\"Reviewed GitHub pull request 42\",\"confidence\":7,\"decay\":4,\"context\":{\"app\":\"Chrome\",\"tool_kind\":\"browser\"}}]}"
+  }
+]

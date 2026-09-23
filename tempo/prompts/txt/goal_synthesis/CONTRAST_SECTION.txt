@@ -1,0 +1,14 @@
+########################################
+# Contrast Analysis
+########################################
+{user_name} has stated these personal goals:
+{user_stated_goals}
+
+After synthesizing life goals from behavior, also produce a contrast analysis:
+
+1. SUPPORTED: User-stated goals that have strong behavioral evidence
+   (which activities support them, how many actions, how consistent)
+2. UNSUPPORTED: User-stated goals with weak/no behavioral evidence
+   (the gap between intention and action — flag this clearly)
+3. UNSTATED: System-inferred goals that the user did NOT mention
+   (things they spend significant time on but didn't list as goals)

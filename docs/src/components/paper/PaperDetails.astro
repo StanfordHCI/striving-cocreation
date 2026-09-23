@@ -1,0 +1,122 @@
+---
+interface Props {
+  base: string;
+  doi: string;
+  bibtex: string;
+}
+const { base, doi, bibtex } = Astro.props;
+const figures = `${base}/figures/uist2026`;
+---
+<div class="paper-content">
+  <div class="paper-width">
+    <section class="paper-section paper-results" id="results" aria-labelledby="results-title">
+      <header class="paper-section-heading">
+        <h2 id="results-title">Results</h2>
+        <p>We ran a week-long study with 14 participants.</p>
+      </header>
+      <div class="paper-result">
+        <div class="paper-result-copy">
+          <h3>Onboarding context improves individual striving quality.</h3>
+          <p>Information people shared about their lives helped Tempo interpret their computer use and infer better strivings.</p>
+        </div>
+        <figure class="paper-result-figure">
+          <a href={`${figures}/striving-quality.png`} target="_blank" rel="noreferrer" aria-label="Open the individual striving quality result at full size"><img src={`${figures}/striving-quality.png`} width="1380" height="619" loading="lazy" alt="Individual striving quality: estimated marginal means 1.43 for Tempo, 1.14 without user context, and 1.09 without hierarchy or user context. Adding user context was significant, p less than .05; hierarchy alone was not." /></a>
+        </figure>
+      </div>
+      <div class="paper-result">
+        <div class="paper-result-copy">
+          <h3>Hierarchy produces a more representative set of strivings.</h3>
+          <p>Grouping observations into intermediate levels helped the overall set reflect what participants were working toward.</p>
+        </div>
+        <figure class="paper-result-figure">
+          <a href={`${figures}/striving-representativeness.png`} target="_blank" rel="noreferrer" aria-label="Open the striving representativeness result at full size"><img src={`${figures}/striving-representativeness.png`} width="1385" height="619" loading="lazy" alt="Set-level striving representativeness: estimated marginal means 1.04 for Tempo, 0.80 without user context, and 0.08 without hierarchy or user context. Adding hierarchy was significant, p less than .05; additional user context was not." /></a>
+        </figure>
+      </div>
+      <div class="paper-result">
+        <div class="paper-result-copy">
+          <h3>Hierarchy supports a better editing experience.</h3>
+          <p>Participants rated editing with the hierarchy more highly than editing with the screenshot view.</p>
+        </div>
+        <figure class="paper-result-figure">
+          <a href={`${figures}/editing-results.png`} target="_blank" rel="noreferrer" aria-label="Open the editing experience result at full size"><img src={`${figures}/editing-results.png`} width="1380" height="580" loading="lazy" alt="Editing experience: estimated marginal mean 1.82 for the hierarchical view and 0.85 for the screenshot view on a −3 to +3 scale, p less than .001, with ratings pooled across seven dimensions." /></a>
+        </figure>
+      </div>
+      <p class="paper-results-note">Estimated marginal means on a −3 to +3 scale; error bars show ±1.96 SE.</p>
+    </section>
+
+    <section class="paper-section paper-method" id="architecture" aria-labelledby="architecture-title">
+      <header class="paper-section-heading">
+        <h2 id="architecture-title">How Tempo works</h2>
+        <p>Screen observations become operations, actions, activities, and strivings.</p>
+      </header>
+      <figure class="paper-diagram">
+        <a href={`${figures}/architecture.png`} target="_blank" rel="noreferrer" aria-label="Open the architecture diagram at full size">
+          <img src={`${figures}/architecture.png`} width="1558" height="374" loading="lazy" alt="Tempo architecture: observe and transcribe screenshots, audit sensitive frames, extract operations, group actions, propose and reconcile activities, then synthesize and refine strivings in a property graph." />
+        </a>
+      </figure>
+    </section>
+
+    <section class="paper-section paper-method" id="editing" aria-labelledby="editing-title">
+      <header class="paper-section-heading">
+        <h2 id="editing-title">Editing the hierarchy</h2>
+        <p>People can edit, reassign, remove, and merge the system’s interpretations.</p>
+      </header>
+      <figure class="paper-diagram">
+        <a href={`${figures}/editing.png`} target="_blank" rel="noreferrer" aria-label="Open the editing diagram at full size">
+          <img src={`${figures}/editing.png`} width="3024" height="1056" loading="lazy" alt="Four editing operations from the paper: A, edit an activity inline; B, reassign it to a different striving with an explanation; C, remove an incorrect striving; D, merge related activities while preserving their evidence." />
+        </a>
+      </figure>
+    </section>
+
+    <section class="paper-section paper-citation" id="citation" aria-labelledby="citation-title">
+      <h2 id="citation-title">Citation</h2>
+      <p class="paper-reference">
+        Shardul Sapkota, Matthew Jörke, Zane Sabbagh, Omar Shaikh, Grace Wang, and James A. Landay. 2026.
+        “What Are You Really Trying to Do?”: Co-Creating Life Goals from Everyday Computer Use.
+        In <em>The 39th Annual ACM Symposium on User Interface Software and Technology</em>
+        (Detroit, MI, USA) <em>(UIST ’26)</em>. Association for Computing Machinery, New York, NY, USA, 20 pages.
+        <a href={doi} target="_blank" rel="noreferrer">doi:10.1145/3830398.3830630</a>
+      </p>
+      <p class="paper-publication-link"><a href={doi} target="_blank" rel="noreferrer">ACM publication ↗</a></p>
+      <div class="paper-bibtex">
+        <div class="paper-bibtex-toolbar">
+          <span>BibTeX</span>
+          <button type="button" class="paper-copy" aria-label="Copy citation" aria-controls="paper-bibtex-code">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" /></svg>
+            <span>Copy</span>
+          </button>
+        </div>
+        <pre><code id="paper-bibtex-code">{bibtex}</code></pre>
+      </div>
+      <p class="paper-copy-status" role="status"></p>
+    </section>
+
+    <footer class="paper-footer">
+      <div class="paper-footer-meta">
+        <span>Stanford Human-Computer Interaction Group · UIST 2026</span>
+        <a href="#top">Back to top ↑</a>
+      </div>
+      <p class="paper-footer-credit">Website design inspired by <a href="https://stanfordhci.github.io/Bloom/" target="_blank" rel="noreferrer">Bloom</a>.</p>
+    </footer>
+  </div>
+</div>
+
+<script>
+  const copyButton = document.querySelector<HTMLButtonElement>('.paper-copy');
+  const citation = document.querySelector<HTMLElement>('#paper-bibtex-code');
+  const status = document.querySelector<HTMLElement>('.paper-copy-status');
+  copyButton?.addEventListener('click', async () => {
+    if (!citation || !status) return;
+    try {
+      await navigator.clipboard.writeText(citation.textContent ?? '');
+      status.textContent = 'Citation copied.';
+    } catch {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(citation);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      status.textContent = 'Citation selected. Press ⌘C or Ctrl+C to copy.';
+    }
+  });
+</script>

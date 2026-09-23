@@ -1,0 +1,230 @@
+You are synthesizing LIFE GOALS for {user_name} from their observed activities.
+
+You are working at the **highest level** of a goal hierarchy that extends Activity Theory upward:
+- **Operations** = low-level HOW (clicks, keystrokes) — already abstracted away.
+- **Actions** = goal-directed WHAT at the task level — already grouped.
+- **Activities** = concrete working spheres / personal projects (Little, 1983) — time-bounded, situated pursuits. These are your inputs.
+- **Life Goals** = personal strivings (Emmons, 1986) — recurring pursuits that organize multiple activities and persist beyond any single project. These are your outputs.
+
+########################################
+# What makes a life goal (personal striving)?
+########################################
+A life goal must have THREE defining properties (Emmons, 1986):
+
+1. **Dispositional recurrence** — it's an ongoing, characteristic pursuit, not a one-time objective. "Finish my dissertation" has an endpoint; "become a credible independent researcher" is something you're always working toward.
+2. **Active behavioral manifestation** — it shows up in what {user_name} actually does, not just what they might wish or value. Since you are inferring from observed behavior, every goal must be grounded in activity patterns you can point to.
+3. **Abstraction above actions** — it organizes multiple concrete activities under a common pursuit. A striving that maps to only ONE activity is probably restating that activity, not a life goal.
+
+A life goal answers: "What is {user_name} consistently pursuing across these activities?" Not a need label, not a personality trait, not a single project restated.
+
+########################################
+# Two-layer output
+########################################
+Each life goal has (1) a **striving** (goal text): what {user_name} is characteristically pursuing, in plain language, and (2) **need tags**: why it matters, as metadata. Write the striving first from behavioral evidence, THEN tag with needs. Do NOT let need tags drive the goal text.
+
+########################################
+# Need Taxonomy (12 dimensions)
+########################################
+Tag each striving with one or more needs (synthesized from Dweck, Murray, SDT, Higgins):
+
+- `competence` — mastery, skill development, doing things well
+- `autonomy` — self-direction, freedom from external control
+- `relatedness` — belonging, connection, being part of something
+- `status_recognition` — being respected, valued, visible
+- `self_coherence` — sense-making, consistency between values and behavior
+- `understanding` — curiosity, making sense of the world
+- `order_predictability` — control, structure, reducing uncertainty
+- `nurturance` — caring for others, mentoring, contributing
+- `safety_security` — stability, avoiding threats, protecting what matters
+- `growth` — learning, expanding capabilities, becoming more
+- `stimulation` — novelty, variety, avoiding boredom
+- `purpose_meaning` — contributing to something larger than oneself
+
+########################################
+# Goal Orientation Dimensions
+########################################
+For each goal, also infer:
+
+**orientation**: `approach` (toward something desirable), `avoidance` (away from something feared), or `mixed` (simultaneously attracts and repels). Do NOT default to approach — most personally significant goals carry both attraction and fear. Actively look for ambivalence.
+
+**aspiration_vs_obligation**: `ideal` (aspirational, self-chosen), `ought` (obligation, external expectation), or `mixed`.
+
+**autonomy**: `autonomous` (freely chosen), `controlled` (external pressure, guilt, reward), or `mixed`.
+
+**identity_link**: How this goal connects to {user_name}'s hoped-for self. Populate for approach AND mixed goals. Null only if no clear identity connection.
+
+**feared_self**: What feared self {user_name} is trying to avoid. Populate for avoidance AND mixed goals. For mixed goals, BOTH identity_link and feared_self should be populated. Null only for pure approach goals.
+
+########################################
+# How to write goal text
+########################################
+Goal text should start with **"{user_name} is ..."** and describe an ongoing personal striving — what the user is characteristically pursuing, drawn to, working toward, or actively avoiding. Vary the phrasing naturally after "is" to fit the specific goal.
+
+**Three properties every goal text must convey:**
+- **Ongoing** — reads as a recurring pattern, not a one-time task
+- **Active** — describes something {user_name} is doing, not wishing
+- **Above any single activity** — captures a pursuit that spans multiple behaviors
+
+Good phrasing patterns (vary these — do NOT repeat the same construction):
+- "{user_name} is pursuing [X]..." (active, ongoing)
+- "{user_name} is working to [X]..." (active, effortful)
+- "{user_name} is invested in [X]..." (ongoing commitment)
+- "{user_name} is drawn to [X]..." (recurring attraction)
+- "{user_name} is actively avoiding [X]..." (avoidance striving)
+- "{user_name} is growing into [X]..." (developmental trajectory)
+- "{user_name} is building [X]..." (ongoing construction)
+- "{user_name} is guarding against [X]..." (protective avoidance)
+- "{user_name} is trying not to [X]..." (avoidance, fear-driven)
+- "{user_name} is keeping up with [X]..." (obligation-driven)
+- "{user_name} is negotiating between [X] and [Y]..." (mixed/tension)
+
+**Write in plain, everyday language.** The goal should feel like something a thoughtful friend would say, not an academic paper. Avoid jargon like "cultivating", "leveraging", "stewardship", "operationalizing", "multifaceted", "restorative variety".
+
+Good examples (note: strivings span ALL life domains, not just work):
+
+APPROACH strivings — pursuing something desirable:
+- "{user_name} is working to become someone people trust at work — careful code reviews and owning deployments show a need to be seen as reliable"
+- "{user_name} is invested in building a life with their partner — apartment hunting, budgeting together, and planning trips all point to making something shared and lasting"
+- "{user_name} is feeding a restless curiosity through wide-ranging reading — browsing jumps across unrelated topics driven by what's interesting, not what's useful"
+- "{user_name} is building a body they feel strong in — consistent gym tracking, meal planning, and researching training programs show this is a real commitment, not a New Year's resolution"
+
+AVOIDANCE strivings — actively steering away from something feared:
+- "{user_name} is actively avoiding shallow work — always goes back to primary sources instead of summaries, afraid of being someone who cuts corners"
+- "{user_name} is guarding against financial precarity — checking accounts frequently, researching safe investments, and avoiding discretionary spending all point to a deep need for security"
+- "{user_name} is trying not to lose touch with old friends — periodic check-ins and travel planning feel driven by fear of drifting apart more than spontaneous desire to connect"
+
+MIXED strivings — attracted to and afraid of the same thing:
+- "{user_name} is drawn to creative side projects but squeezed by deadlines — tool exploration and experiments happen in bursts between work sprints, pulled between the identity of a builder and the fear of falling behind"
+- "{user_name} is growing into a technical leader but unsure they belong there — mentoring and driving architecture discussions point to an identity beyond writing code, but they still default to individual work when stressed"
+- "{user_name} is pursuing independence from their parents' expectations while still wanting their approval — career choices and lifestyle decisions show someone negotiating between their own path and family harmony"
+
+OUGHT strivings — obligation-driven patterns:
+- "{user_name} is keeping up with administrative responsibilities they find draining — grading, email replies, and form submissions happen reactively and with low engagement, driven by obligation not interest"
+- "{user_name} is staying on top of their health out of anxiety more than enthusiasm — doctor visits, symptom Googling, and insurance paperwork feel like threat management, not self-care"
+
+Bad examples (avoid):
+
+TOO VAGUE / WISH, NOT PURSUIT:
+- "wants to be productive" — unfalsifiable, not grounded in behavior
+- "wants to be happy" — a need, not a striving
+- "{user_name} hopes to stay healthy" — "hopes to" is a wish. If there's evidence, say "is invested in staying healthy"
+- "is doing well at work" — too generic, no insight
+
+RESTATING AN ACTIVITY OR PROJECT (apply the completability test — can it be checked off?):
+- "{user_name} is finishing their dissertation" → project. The striving might be "pursuing recognition as a credible independent researcher"
+- "{user_name} is apartment hunting" → project. The striving might be "building a stable, independent life in the Bay Area"
+- "{user_name} is training for a half marathon" → project. The striving might be "building a body they feel strong in"
+- "{user_name} is managing email" → activity. Push to the underlying pursuit it serves.
+
+ACADEMIC JARGON (write like a thoughtful friend, not a paper):
+- "is cultivating relational nurturance and community-embedded stewardship" → try "is invested deeply in showing up for the people around them"
+
+
+NEED LABEL MASQUERADING AS A GOAL:
+- "is seeking competence" — that's a need tag, not a striving. What is {user_name} actually DOING that shows competence-seeking?
+- "is pursuing autonomy" — same. How does it manifest? "is building a career where nobody tells them what to work on" is a striving.
+
+########################################
+# Current activities for {user_name}
+########################################
+Each line is: "ID:<int> | <activity text> | status:<status> | used:<count>x | last:<when> | <metadata>"
+- `conf=N/10` is confidence. `stability=N/10` is stability. Use both to weight activities for goal grouping.
+- `purpose:...` is proximate purpose. `domain:...` is life domain. `people:...` lists people involved.
+- `engage:...` is engagement profile. `init:...` is initiation profile.
+
+{activities}
+
+########################################
+# Existing goals (anchors — preserve these)
+########################################
+- Goals marked [user-edited] or [user-provided]: keep their exact label (you may reassign activities).
+- Goals marked [locked]: ground truth — do NOT merge, delete, or substantially alter.
+- User annotations provide privileged context — weight higher than inferred evidence.
+- Activities marked [user-reassigned] should stay with their assigned goal.
+- Other existing goals may be updated, merged, or removed.
+
+{existing_goals}
+
+{user_goals_section}
+
+{user_constraints}
+{user_context}
+########################################
+# Confidence scoring
+########################################
+Rate your confidence in each synthesized goal:
+
+- **Evidence breadth**: Is the goal grounded in multiple activities across different domains, or based on a single activity?
+- **Behavioral manifestation**: Is there direct evidence of {user_name} actively pursuing this striving, or is it an inference from surface behavior?
+- **Distinctness**: Is this goal clearly distinct from other goals, not a redundant restatement?
+
+Score: **1 (speculative, thin evidence)** to **10 (strong multi-activity convergence with clear behavioral pattern)**.
+
+Be conservative. Just because {user_name} uses certain apps does not mean they are actively pursuing the striving you infer. Assign high confidence (8-10) only when multiple activities show a clear, sustained behavioral pattern that directly supports the goal.
+
+Edge cases:
+- **Contradictions**: If two activities suggest conflicting goals, keep both and add a "conflict" relation rather than forcing them into one goal.
+- **Granularity mismatch**: If a goal maps to only one activity, it may be restating the activity — push to the underlying striving or lower confidence.
+- **Weak evidence**: Keep low-confidence goals rather than dropping them, but mark confidence accordingly.
+
+########################################
+TASK
+
+Synthesize broad LIFE GOALS (personal strivings) that explain {user_name}'s observed activities.
+
+Guidelines:
+- Every activity should belong to at least one goal.
+- A life goal should start with "{user_name} ..." and represent an ongoing pursuit, not a one-time project.
+- Write the striving first from behavioral evidence, THEN tag with needs.
+- Infer orientation, aspiration_vs_obligation, autonomy, identity connections, and feared selves.
+- If an existing goal still applies, reference it via `matches_goal_id` rather than creating a duplicate.
+- **Account for every existing goal.** If you drop an existing goal (don't reference it via `matches_goal_id`), you MUST list it in `dropped_goals` with a reason. Don't silently drop goals.
+- If a low-confidence inferred goal clearly serves a user-stated goal, fold it in.
+- Avoid overly generic goals — stay grounded in behavioral evidence.
+- Push past activity/project descriptions to the underlying striving: "what is {user_name} CONSISTENTLY PURSUING across these activities?"
+
+{contrast_section}
+
+########################################
+OUTPUT STRICT JSON (no prose, no markdown):
+
+{{
+  "goals": [
+    {{
+      "text": "{user_name} ...",
+      "needs": ["competence", "relatedness"],
+      "orientation": "approach",
+      "aspiration_vs_obligation": "ideal",
+      "autonomy": "autonomous",
+      "identity_link": "becoming a trusted technical leader",
+      "feared_self": null,
+      "activity_ids": [list of activity IDs that serve this goal],
+      "reasoning": "Why these activities form this goal",
+      "synthesis_evidence": "What pattern across these activities reveals the underlying striving? Why do they belong together despite being in different domains?",
+      "confidence": 8,
+      "matches_goal_id": null,
+      "evidence_summary": "Brief summary of behavioral evidence",
+      "people": ["Alice", "DevOps team"],
+      "domains": ["work", "social"],
+      "engagement_signature": "Deep focus sessions alternating with collaborative reviews",
+      "initiation_signature": "Self-initiated in mornings, externally triggered for reviews",
+      "temporal_context": "Weekday mornings, sprint boundaries"
+    }}
+  ],
+  "goal_relations": [
+    {{
+      "goal_a_idx": 0,
+      "goal_b_idx": 2,
+      "relation": "conflict",
+      "evidence": "Brief evidence for this relation"
+    }}
+  ],
+  "dropped_goals": [
+    {{
+      "goal_id": 42,
+      "goal_text": "original text of the dropped goal",
+      "reason": "merged|evidence_changed|redundant|absorbed",
+      "explanation": "Its activities were reassigned to goal X because..."
+    }}
+  ]{contrast_output_schema}
+}}

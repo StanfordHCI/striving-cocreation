@@ -1,0 +1,53 @@
+---
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+<div class:list={['paper-editing-motif', { compact }]} aria-hidden="true">
+  <svg viewBox="0 0 172 458" fill="none" focusable="false">
+    <g class="observations">
+      <rect x="22" y="10" width="58" height="40" rx="4" />
+      <path d="M22 21H80M32 31H64M32 39H55" />
+      <circle cx="29" cy="16" r="1" /><circle cx="34" cy="16" r="1" />
+      <rect x="98" y="57" width="58" height="40" rx="4" />
+      <path d="M98 68H156M108 78H145M108 86H133" />
+      <circle cx="105" cy="63" r="1" /><circle cx="110" cy="63" r="1" />
+    </g>
+    <g class="original-links">
+      <path d="M51 50C51 82 31 97 31 128M51 50C51 84 82 91 88 130M127 97L145 134M31 128L64 195M88 130L64 195M145 134L137 204" />
+      <path d="M137 204L124 292" />
+    </g>
+    <g class="operations"><circle cx="31" cy="128" r="4" /><circle cx="88" cy="130" r="4" /><circle cx="145" cy="134" r="4" /></g>
+    <g class="actions"><circle cx="64" cy="195" r="6" /><circle cx="137" cy="204" r="6" /></g>
+    <path class="removed-link" d="M64 195L124 292" />
+    <path class="correction" d="M88 241L102 250M101 238L88 252" />
+    <path class="reassigned-link" d="M62 203C24 223 20 264 43 309M35 303L43 309L44 299" />
+    <text x="5" y="253" transform="rotate(-7 5 253)">reassign</text>
+    <g class="activities"><circle cx="124" cy="292" r="8" /><circle cx="46" cy="316" r="8" /></g>
+    <path class="merged-links" d="M46 324C46 352 88 359 88 390M124 300C124 344 88 352 88 390" />
+    <text x="116" y="360" transform="rotate(5 116 360)">merge</text>
+    <circle class="merged-node" cx="88" cy="396" r="11" />
+    <path class="continuation" d="M88 407V451" />
+    <circle class="continuation-dot" cx="88" cy="455" r="2" />
+  </svg>
+</div>
+
+<style>
+  .paper-editing-motif { position: absolute; top: 64px; right: max(18px, calc((100vw - 1440px) / 2)); width: clamp(130px, 11vw, 160px); pointer-events: none; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  path, rect { stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.2; }
+  .observations { stroke: #b7a69b; fill: #fff; }
+  .observations circle { fill: #b7a69b; stroke: none; }
+  .original-links { stroke: #cbbeb5; }
+  .operations { fill: #d1c4bf; }
+  .actions { fill: #ad9283; }
+  .removed-link { stroke: #bfaea3; stroke-dasharray: 3 4; }
+  .correction { stroke: #92725f; }
+  .reassigned-link, .merged-links { stroke: #92725f; }
+  text { fill: #806454; font-family: var(--paper-font); font-size: 12px; font-style: italic; }
+  .activities { fill: #9a7e6e; }
+  .merged-node { fill: #69554d; }
+  .continuation { stroke: #cbbeb5; }
+  .continuation-dot { fill: #cbbeb5; }
+  .compact { top: 30px; right: 8px; width: 52px; }
+  @media (max-width: 1199px) { .paper-editing-motif:not(.compact) { display: none; } }
+</style>

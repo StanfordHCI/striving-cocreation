@@ -1,0 +1,111 @@
+You are reviewing and refining a set of synthesized LIFE GOALS for {user_name}.
+
+These goals were synthesized directly from raw behavioral observations (screen captures, window titles, typed text) — NOT from pre-grouped activities. There is no intermediate hierarchy. This means:
+- Goals are grounded in raw screen observations, not structured activity data.
+- There are no activity IDs, confidence scores, or stability metrics on the inputs.
+- Screen presence does NOT equal engagement — a window being visible doesn't mean deep engagement.
+
+Life goals are personal strivings (Emmons, 1986) — enduring, recurring pursuits that organize multiple behaviors and persist beyond any single project.
+
+Each life goal must have three defining properties:
+1. **Dispositional recurrence** — ongoing, not a one-time objective (the completability test: can it be checked off?)
+2. **Active behavioral manifestation** — shows up in what {user_name} does, not just what they wish
+3. **Abstraction above observations** — organizes multiple distinct behaviors under a common pursuit
+
+Below is the previous synthesis output. Critique it for:
+
+## Standard quality checks
+1. **Redundancy**: Are any goals too similar and should be merged?
+2. **Overly broad**: Is any goal so broad it's meaningless? (e.g., "is trying to be productive")
+3. **Restating an observation**: Is any goal just describing a single screen moment? Apply the completability test. Common failure: "is editing a spreadsheet" (observation) instead of the underlying striving it serves.
+4. **Too surface-level**: Is any goal just a task category? Push past "browses the web" toward the underlying pursuit.
+5. **Too few goals**: If the synthesis produced fewer than 5 goals, consider whether you have: (a) lumped distinct strivings into one overly broad goal that should be split, (b) missed entire life domains (e.g., only work goals, no personal/social/health strivings), (c) overlooked avoidance or obligation patterns that constitute separate pursuits. But do NOT force goals that aren't supported by behavioral evidence — 3 well-grounded goals are better than 8 thin ones.
+6. **Evidence quality**: Does the evidence actually support each goal? Remember: screen presence ≠ engagement.
+7. **Language clarity**: Is any goal written in academic jargon? Rewrite to sound like something a thoughtful friend would say.
+
+## Phrasing checks
+8. **Phrasing variety**: Do multiple goals use the exact same construction (e.g., all start with "is trying to...")? Vary naturally: "is pursuing," "is invested in," "is working to," "is drawn to," "is building," "is growing into," "is dedicated to," "is actively avoiding," etc.
+9. **Wish vs. pursuit**: Does any goal read as a desire rather than an active pursuit? "Wants to," "hopes to," "wishes to" describe aspirations, not strivings. If there's behavioral evidence, rephrase as what {user_name} is actively doing.
+10. **Behavioral grounding**: Since these are inferred from raw screen observations (not self-report), does each goal describe something the system has evidence of {user_name} *doing*, not just intending?
+
+## Theory-grounded checks
+11. **Conflict completeness** (Emmons): Are all key tensions between goals captured in goal_relations?
+12. **Avoidance & ambivalence gap** (Markus & Nurius): Are ALL goals pure approach? Check:
+   (a) If no avoidance goals: look for procrastination, consistent avoidance, or defensive behaviors.
+   (b) If no `mixed` goals: look for goals where {user_name} is attracted to an outcome but also fears aspects of it. For `mixed` goals, BOTH `identity_link` and `feared_self` must be populated.
+13. **Ideal/ought balance** (Higgins): Is everything aspirational? Look for obligation-driven patterns: deadlines, external expectations, "should" behaviors.
+14. **Autonomy signal check** (SDT): Are all goals autonomous? Look for grudging patterns: reactive behaviors, externally-triggered actions, low-engagement tasks.
+15. **Level appropriateness** (Emmons): Is each goal at the right abstraction level? Not so abstract it's a need label ("wants competence"), not so concrete it's restating an observation ("editing a spreadsheet"). Apply the completability test.
+16. **Synthesis quality**: Does each `synthesis_evidence` convincingly explain WHY diverse observations belong under one striving? If tautological ("these all involve a browser"), it's a surface grouping, not a striving.
+17. **Need tag accuracy**: Did need tags drive the goal text? If it reads like a need description ("is seeking competence and mastery"), rewrite as what {user_name} is actually doing.
+18. **Constraint compliance**: Are [locked] goals preserved? Are [user-edited] labels kept verbatim? Are user annotations reflected? NEVER merge or remove a [locked] goal.
+
+Previous synthesis:
+{previous_output}
+
+Observations for reference:
+{activities}
+
+{user_goals_section}
+
+{need_saturation_context}
+{user_context}
+########################################
+# Confidence scoring
+########################################
+After refining, recalibrate the confidence score for each goal:
+
+- **Evidence breadth**: Is the goal grounded in multiple observations across different moments, or based on a single screen?
+- **Engagement quality**: Do the observations show active, sustained engagement (typing, navigating, creating) or just passive screen presence?
+- **Distinctness**: Is this goal clearly distinct from other goals, not a redundant restatement?
+
+Score: **1 (speculative, thin evidence)** to **10 (strong multi-observation convergence with clear behavioral pattern)**.
+
+Be conservative. Just because an application appears on {user_name}'s screen does not mean they have deeply engaged with it — they may have only glanced at it. Assign high confidence (8-10) only when multiple observations show explicit, sustained engagement that directly supports the goal.
+
+Edge cases:
+- **Contradictions**: If observations suggest conflicting goals, keep both and add a "conflict" relation rather than forcing them into one goal.
+- **Granularity mismatch**: If a goal maps to only one observation, it may be restating that moment — push to the underlying striving or lower confidence.
+- **Weak evidence**: Keep low-confidence goals rather than dropping them, but mark confidence accordingly.
+- **Confidence recalibration**: After merging or splitting goals, recalibrate confidence based on the combined evidence — the merged/split result may be stronger or weaker than the original.
+
+Produce a REVISED set of goals in the same JSON format. Keep goals that are good,
+merge/split/revise goals that need it.
+
+CRITICAL: Set `activity_ids` to `[]` for all goals (there are no activity entities in observation mode).
+Preserve `people`, `domains`, `engagement_signature`, `initiation_signature`, and `temporal_context`. If merging, union people/domains lists and revise summaries for the merged set.
+
+OUTPUT STRICT JSON (same schema as before, no prose, no markdown):
+{{
+  "goals": [
+    {{
+      "text": "{user_name} is ...",
+      "needs": [...],
+      "orientation": "approach|avoidance|mixed",
+      "aspiration_vs_obligation": "ideal|ought|mixed",
+      "autonomy": "autonomous|controlled|mixed",
+      "identity_link": "... or null",
+      "feared_self": "... or null",
+      "activity_ids": [],
+      "reasoning": "...",
+      "synthesis_evidence": "What cross-observation pattern reveals this as one underlying striving?",
+      "confidence": 8,
+      "matches_goal_id": null,
+      "evidence_summary": "...",
+      "people": ["..."],
+      "domains": ["work", "personal"],
+      "engagement_signature": "...",
+      "initiation_signature": "...",
+      "temporal_context": "..."
+    }}
+  ],
+  "goal_relations": [...],
+  "dropped_goals": [
+    {{
+      "goal_id": 42,
+      "goal_text": "original text",
+      "reason": "merged|evidence_changed|redundant|absorbed",
+      "explanation": "why this goal was dropped"
+    }}
+  ]
+}}

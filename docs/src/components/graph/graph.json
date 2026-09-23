@@ -1,0 +1,161 @@
+{
+  "provenance": {
+    "label": "Adapted from the paper’s worked example",
+    "url": "https://arxiv.org/abs/2605.00497v2",
+    "description": "The actions, activities, strivings, and their connections follow Figure 1 after the illustrated user edit. Operation examples illustrate the screen interactions beneath those actions; they are not a recorded event log."
+  },
+  "goals": [
+    {
+      "id": 110,
+      "text": "Dedicated to preserving cultural identity and connection while mitigating the isolation of life abroad",
+      "source": "Figure 1 · Striving"
+    },
+    {
+      "id": 112,
+      "text": "Being a reliable source of care and support for aging family, even from afar",
+      "source": "Figure 1 · Striving induced after the user edit"
+    }
+  ],
+  "activities": [
+    {
+      "id": 1001,
+      "text": "Managing homesickness and cultural identity through personal interests, food, news and family messages",
+      "parents": [
+        110
+      ],
+      "source": "Figure 1 · Activity"
+    },
+    {
+      "id": 1004,
+      "text": "Supporting a family member with aging in place",
+      "parents": [
+        112
+      ],
+      "source": "Figure 1 · Activity rewritten by the user"
+    }
+  ],
+  "actions": [
+    {
+      "id": 2001,
+      "text": "Watching a classical music performance on YouTube",
+      "parents": [
+        1001
+      ],
+      "source": "Figure 1 · Action"
+    },
+    {
+      "id": 2002,
+      "text": "Ordering food on DoorDash",
+      "parents": [
+        1001
+      ],
+      "source": "Figure 1 · Action"
+    },
+    {
+      "id": 2003,
+      "text": "Checking messages and monitoring live election results",
+      "parents": [
+        1001
+      ],
+      "source": "Figure 1 · Action"
+    },
+    {
+      "id": 2031,
+      "text": "Searching for family health services",
+      "parents": [
+        1004
+      ],
+      "source": "Figure 1 · Action"
+    },
+    {
+      "id": 2032,
+      "text": "Researching support for independently living older adults",
+      "parents": [
+        1004
+      ],
+      "source": "Figure 1 · Action"
+    }
+  ],
+  "operations": [
+    {
+      "id": 3001,
+      "text": "Browsing YouTube search results for classical music",
+      "parents": [
+        2001
+      ],
+      "source": "Section 3.1.1 · Published operation example"
+    },
+    {
+      "id": 3002,
+      "text": "Playing a classical music performance on YouTube",
+      "parents": [
+        2001
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3003,
+      "text": "Scrolling restaurant listings on DoorDash",
+      "parents": [
+        2002
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3004,
+      "text": "Clicking a food item on a DoorDash menu",
+      "parents": [
+        2002
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3005,
+      "text": "Opening an iMessage conversation",
+      "parents": [
+        2003
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3006,
+      "text": "Viewing live election results in a browser",
+      "parents": [
+        2003
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3031,
+      "text": "Typing “family health monitoring” into a search engine",
+      "parents": [
+        2031
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3032,
+      "text": "Opening a family health monitoring service’s website",
+      "parents": [
+        2031
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3033,
+      "text": "Searching for support for independently living older adults",
+      "parents": [
+        2032
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    },
+    {
+      "id": 3034,
+      "text": "Scrolling a page describing in-home support services",
+      "parents": [
+        2032
+      ],
+      "source": "Illustrative operation · Reconstructed for this demo"
+    }
+  ]
+}

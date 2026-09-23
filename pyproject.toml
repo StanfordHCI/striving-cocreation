@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tempo-ai"
+version = "0.1.0"
+description = "A local-first behavioral pattern observer that organizes computer usage into an Activity Theory hierarchy."
+readme = "README.md"
+authors = [{ name = "Omar Shaikh" }]
+license = "MIT"
+keywords = ["activity-theory", "behavior", "screen-recording", "local-first", "user-modeling"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Framework :: FastAPI",
+    "Intended Audience :: Science/Research",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+]
+dependencies = [
+    "pillow",
+    "mss",
+    "pynput",
+    "shapely",
+    "openai>=1.0.0",
+    "SQLAlchemy>=2.0.0",
+    "pydantic>=2.0.0",
+    "sqlalchemy-utils>=0.41.0",
+    "python-dotenv>=1.0.0",
+    "scikit-learn>=1.0.0",
+    "aiosqlite>=0.19.0",
+    "greenlet",
+    "persist-queue",
+    "google-genai>=1.0.0",
+    "litellm==1.83.0",
+    "instructor[google-genai]>=1.15.0",
+    "numpy>=1.21.0",
+    "pulp>=2.7.0",
+    "tenacity>=8.2.0",
+    "pyparsing",
+    # Server dependencies
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "websockets>=12.0",
+    # Platform-specific dependencies (installed automatically on the correct platform)
+    "pyobjc-framework-Cocoa; sys_platform == 'darwin'",
+    "pyobjc-framework-Quartz; sys_platform == 'darwin'",
+    "pyscreenshot; sys_platform == 'linux'",
+    "evdev; sys_platform == 'linux'",
+]
+
+requires-python = ">=3.12"
+
+[project.scripts]
+tempo = "tempo.cli:cli"
+
+[project.urls]
+"Homepage" = "https://github.com/StanfordHCI/striving-cocreation"
+"Source" = "https://github.com/StanfordHCI/striving-cocreation"
+"Issues" = "https://github.com/StanfordHCI/striving-cocreation/issues"
+
+[tool.setuptools.packages.find]
+include = ["tempo*"]
+
+[tool.setuptools.package-data]
+"tempo.prompts" = ["txt/**/*.txt"]
+"tempo.ui" = ["**/*"]
+
+[project.optional-dependencies]
+# Test dependencies
+test = [
+    "build>=1.2.2",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.10.0",
+]

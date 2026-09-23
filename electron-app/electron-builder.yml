@@ -1,0 +1,27 @@
+appId: com.tempo.app
+productName: Tempo
+directories:
+  output: dist
+files:
+  - "dist/**/*"
+  - "dist-main/**/*"
+  - "index.html"
+  - "package.json"
+extraResources:
+  - from: "../resources/python-server"
+    to: "python-server"
+    filter: ["**/*"]
+mac:
+  category: public.app-category.productivity
+  target:
+    - dmg
+    - zip
+win:
+  target:
+    - nsis
+    - zip
+linux:
+  target:
+    - AppImage
+    - deb
+
